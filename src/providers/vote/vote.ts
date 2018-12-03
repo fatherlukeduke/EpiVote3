@@ -71,13 +71,21 @@ export class VoteProvider {
 
   submitVote(choice : number){
     return new Promise ( (resolve) => {
-       let vote : Vote = {
-         voteChoiceID : choice,
-         roleID : this.currentRole.roleID,
-         meetingPatientQuestionID : this.currentQuestion.meetingPatientQuestionID
-       }
-      this.http.post('https://api.epivote.uk/vote/submitVote', vote , { headers: {'Content-Type': 'multipart/form-data'} } )
-       .subscribe( () => resolve() )
+       let vote = {
+          voteChoiceID : choice,
+          roleID : this.currentRole.roleID,
+          meetingPatientQuestionID : this.currentQuestion.meetingPatientQuestionID
+        }
+      
+       let body = 'voteChoiceID='+choice+'&roleID='+this.currentRole.roleID+'&meetingPatientQuestionID='+this.currentQuestion.meetingPatientQuestionID;
+
+       var str = Object.keys(vote).map(function(key) {
+         return key + '=' + vote[key];
+        }).join('&');
+       console.log( str);
+
+       this.http.post('https://api.epivote.uk/vote/submitVote', body, { headers: {'Content-Type': 'application/x-www-form-urlencoded'} } )
+        .subscribe( () => resolve() )
     })
   }
 }
