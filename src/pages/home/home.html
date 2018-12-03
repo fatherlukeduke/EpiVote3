@@ -1,0 +1,31 @@
+<ion-header >
+
+  <ion-navbar [hideBackButton]="true">
+    <img src="../../assets/imgs/vote_icon.png" />
+  
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<h2>Welcome to EpiVote</h2>
+<h5>There is a meeting scheduled for today.  </h5>
+<h5>Choose a role and lick launch to proceed.</h5>
+
+<form [formGroup]="roleForm">
+    <ion-item margin-bottom>
+        <ion-label color="primary" floating>Role</ion-label>
+        <ion-select [multiple]="false" interface="action-sheet" formControlName="role" >
+           <ion-option [value]="item"  *ngFor="let item of roles" >
+              {{ item.roleName }}
+           </ion-option>
+        </ion-select>
+      </ion-item>
+      <p *ngIf="error" style="color:red">You need to enter a role.</p>
+      <div text-center>
+          <button ion-button color="dark" (click)="enterMeeting()">Enter meeting</button>
+      </div>
+</form>
+
+</ion-content>
