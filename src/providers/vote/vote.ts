@@ -76,7 +76,7 @@ export class VoteProvider {
          roleID : this.currentRole.roleID,
          meetingPatientQuestionID : this.currentQuestion.meetingPatientQuestionID
        }
-      this.http.post('https://api.epivote.uk/vote/submitVote', vote , { headers: {'Content-Type': 'application/x-www-form-urlencoded'} } )
+      this.http.post('https://api.epivote.uk/vote/submitVote', vote , { headers: {'Content-Type': 'multipart/form-data'} } )
        .subscribe( () => resolve() )
     })
   }
