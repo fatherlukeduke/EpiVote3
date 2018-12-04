@@ -10,6 +10,7 @@ import { HomePage } from '../pages/home/home';
 import { ChooseVotePage } from '../pages/choose-vote/choose-vote';
 import { ConfirmVotePage } from '../pages/confirm-vote/confirm-vote';
 import { VoteProvider } from '../providers/vote/vote';
+import { UtilitiesProvider } from '../providers/utilities/utilities';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { VoteProvider } from '../providers/vote/vote';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    VoteProvider
+    VoteProvider,
+    UtilitiesProvider
   ]
 })
 export class AppModule {}
