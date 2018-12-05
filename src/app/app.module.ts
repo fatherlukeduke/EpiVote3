@@ -9,18 +9,21 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ChooseVotePage } from '../pages/choose-vote/choose-vote';
 import { ConfirmVotePage } from '../pages/confirm-vote/confirm-vote';
+import { AwaitNextQuestionPage} from '../pages/await-next-question/await-next-question';
 import { VoteProvider } from '../providers/vote/vote';
 import { UtilitiesProvider } from '../providers/utilities/utilities';
+
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     ConfirmVotePage,
-    ChooseVotePage
+    ChooseVotePage,
+    AwaitNextQuestionPage
   ],
   imports: [
-  BrowserModule,
+    BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp)
   ],
@@ -29,7 +32,8 @@ import { UtilitiesProvider } from '../providers/utilities/utilities';
     MyApp,
     HomePage,
     ConfirmVotePage,
-    ChooseVotePage
+    ChooseVotePage,
+    AwaitNextQuestionPage
   ],
   providers: [
     StatusBar,
