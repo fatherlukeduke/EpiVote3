@@ -1,6 +1,7 @@
 import { HttpClient  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { VoteChoice , MeetingPatientQuestion ,Role , Vote} from '../../models/interfaces';
+import { UtilitiesProvider } from './../utilities/utilities';
 
 
 @Injectable()
@@ -16,7 +17,7 @@ export class VoteProvider {
  public roles : Role;
  public newPatientFlag : boolean
 
-  constructor(public http : HttpClient) {
+  constructor(public http : HttpClient, public utilities : UtilitiesProvider) {
     console.log('Hello VoteProvider Provider');
 
   }
@@ -71,21 +72,20 @@ export class VoteProvider {
 
   submitVote(choice : number){
     return new Promise ( (resolve) => {
-       let vote = {
-          voteChoiceID : choice,
-          roleID : this.currentRole.roleID,
-          meetingPatientQuestionID : this.currentQuestion.meetingPatientQuestionID
-        }
-      
-       let body = 'voteChoiceID='+choice+'&roleID='+this.currentRole.roleID+'&meetingPatientQuestionID='+this.currentQuestion.meetingPatientQuestionID;
+       let vote : Vote = {
+         voteChoiceID : choice,
+         roleID : this.currentRole.roleID,
+         meetingPatientQuestionID : this.currentQuestion.meetingPatientQuestionID
+       }
 
-       var str = Object.keys(vote).map(function(key) {
-         return key + '=' + vote[key];
-        }).join('&');
-       console.log( str);
+      //  let params : string = Object.keys(vote).map( (key) => {
+      //     return key + '=' + vote[key];
+      //   }).join('&');
 
-       this.http.post('https://api.epivote.uk/vote/submitVote', body, { headers: {'Content-Type': 'application/x-www-form-urlencoded'} } )
-        .subscribe( () => resolve() )
+       let params : string = this.utilities.objectToUrlParameters(vote); 
+
+      this.http.post('https://api.epivote.uk/vote/submitVote', params , { headers: {'Content-Type': 'application/x-www-form-urlencoded'} } )
+       .subscribe( () => resolve() )
     })
   }
 }

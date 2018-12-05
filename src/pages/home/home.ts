@@ -27,6 +27,7 @@ currentQuestion : MeetingPatientQuestion ;
 roles : Role;
 roleForm : FormGroup;
 error : boolean = false;
+loading : boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
       public voteProvider: VoteProvider, public formBuilder : FormBuilder) {
@@ -36,7 +37,10 @@ error : boolean = false;
         });
 
     this.voteProvider.getRoles()
-      .then( (data : Role) => { this.roles  = data })
+      .then( (data : Role) => { 
+        this.roles  = data ;
+        this.loading = false;
+       })
 
   }
 

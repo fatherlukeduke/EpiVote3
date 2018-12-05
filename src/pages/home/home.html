@@ -9,9 +9,14 @@
 
 
 <ion-content padding>
+
+<div *ngIf="loading" text-center>
+  <img src="../../assets/imgs/loader.gif" />
+</div> 
+
 <h2>Welcome to EpiVote</h2>
 <h5>There is a meeting scheduled for today.  </h5>
-<h5>Choose a role and lick launch to proceed.</h5>
+<h5>Choose a role and click launch to proceed.</h5>
 
 <form [formGroup]="roleForm">
     <ion-item margin-bottom>

@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { VoteProvider } from '../../providers/vote/vote';
 import { HomePage } from '../home/home';
 import { ChooseVotePage } from './../choose-vote/choose-vote';
+import { AwaitNextQuestionPage } from './../await-next-question/await-next-question';
 
 /**
  * Generated class for the ConfirmVotePage page.
@@ -42,7 +43,7 @@ export class ConfirmVotePage {
     this.voteProvider.submitVote(this.choice)
      .then(() =>  this.voteProvider.getNextQuestion() )
      .then( ()=> {
-      this.navCtrl.push(ChooseVotePage);
+      this.navCtrl.push(AwaitNextQuestionPage);
      })
     
   }
