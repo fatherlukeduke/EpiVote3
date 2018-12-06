@@ -41,8 +41,8 @@ export class ConfirmVotePage {
 
   confirm() {
     this.voteProvider.submitVote(this.choice)
-     .then(() =>  this.voteProvider.getNextQuestion() )
-     .then( ()=> {
+     //.then(() =>  this.voteProvider.getNextQuestion() )
+     .then(()=> {
       this.navCtrl.push(AwaitNextQuestionPage);
      })
     

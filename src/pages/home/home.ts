@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component ,ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ConfirmVotePage } from '../confirm-vote/confirm-vote';
 import { VoteProvider } from '../../providers/vote/vote';
 import { VoteChoice , MeetingPatientQuestion, Role} from '../../models/interfaces';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ChooseVotePage } from './../choose-vote/choose-vote';
+import { stringify } from '@angular/compiler/src/util';
 
 
 /**
@@ -28,9 +29,10 @@ roles : Role;
 roleForm : FormGroup;
 error : boolean = false;
 loading : boolean = true;
+incomingMessage : string = "test";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-      public voteProvider: VoteProvider, public formBuilder : FormBuilder) {
+      public voteProvider: VoteProvider, public formBuilder : FormBuilder, private ref: ChangeDetectorRef) {
 
         this.roleForm = this.formBuilder.group({
           role: ['', Validators.required]
@@ -42,6 +44,11 @@ loading : boolean = true;
         this.loading = false;
        })
 
+       voteProvider.messageChange.subscribe ((value) => {        
+         this.incomingMessage = "INCOMING!";
+         this.ref.detectChanges()
+       })
+
   }
 
 
@@ -49,6 +56,10 @@ loading : boolean = true;
     console.log('ionViewDidLoad HomePage');
   }
 
+
+ test(){
+   this.incomingMessage = "button worked";
+ }
 
  submitVote(choice, choiceText){
     this.navCtrl.push(ConfirmVotePage, { choice : choice, choiceText : choiceText } )

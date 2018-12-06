@@ -12,7 +12,7 @@ import { ConfirmVotePage } from '../pages/confirm-vote/confirm-vote';
 import { AwaitNextQuestionPage} from '../pages/await-next-question/await-next-question';
 import { VoteProvider } from '../providers/vote/vote';
 import { UtilitiesProvider } from '../providers/utilities/utilities';
-
+import {FCM} from '@ionic-native/fcm'
 
 @NgModule({
   declarations: [
@@ -40,7 +40,8 @@ import { UtilitiesProvider } from '../providers/utilities/utilities';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     VoteProvider,
-    UtilitiesProvider
+    UtilitiesProvider,
+    FCM
   ]
 })
 export class AppModule {}

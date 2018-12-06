@@ -14,8 +14,16 @@
 
 
 <ion-content padding>
-  <div>
-    <h2>Voting is still open</h2>
-    <img src="../../assets/imgs/loader.gif" />
+  <div *ngIf="loading" text-center>
+    <h3>Please wait for voting on this question to close.</h3>
+    <img style="width:50%" src="../../assets/imgs/loader.gif" />
   </div>
+
+  <div *ngIf="!loading">
+    <h3>Voting on this question is now closed.</h3>
+
+    <button ion-button color="dark" (click)="nextQuestion()">Next Question</button>
+
+  </div>
+
 </ion-content>
