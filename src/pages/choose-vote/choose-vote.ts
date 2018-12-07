@@ -11,13 +11,15 @@ import { VoteChoice, MeetingPatientQuestion } from '../../models/interfaces';
   templateUrl: 'choose-vote.html',
 })
 export class ChooseVotePage {
-  public currentPatient: number;
-  public votingChoices: VoteChoice;
-  public currentQuestion: MeetingPatientQuestion;
+  currentPatient: number;
+  votingChoices: VoteChoice;
+  currentQuestion: MeetingPatientQuestion;
+  loading : boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public voteProvider: VoteProvider) {
       this.votingChoices = voteProvider.votingChoices;
       this.currentQuestion = voteProvider.currentQuestion;
+      this.loading = false;
   }
 
   submitVote(choice, choiceText) {

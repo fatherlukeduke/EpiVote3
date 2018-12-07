@@ -40,7 +40,7 @@ export class VoteProvider {
         this.messageChange.next(data);
         
         if(data.wasTapped){
-          console.log("Received in background: " + JSON.stringify(data) );
+          console.log("Received in background: " + JSON.stringify(data));
         } else {
           console.log("Received in foreground: " + JSON.stringify(data));
         };

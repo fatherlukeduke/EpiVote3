@@ -1,8 +1,8 @@
-<ion-header >
+<ion-header>
 
   <ion-navbar [hideBackButton]="true">
     <img src="../../assets/imgs/vote_icon.png" />
-  
+
   </ion-navbar>
 
 </ion-header>
@@ -10,31 +10,34 @@
 
 <ion-content padding>
 
-<div *ngIf="loading" text-center>
-  <img src="../../assets/imgs/loader.gif" />
-</div> 
+  <div *ngIf="loading" text-center>
+    <h1>Initialising</h1>
+    <img src="../../assets/imgs/loader.gif" />
+  </div>
 
-<h2>Welcome to EpiVote</h2>
-<h5>There is a meeting scheduled for today.  </h5>
-<h5>Choose a role and click launch to proceed.</h5>
 
-<!-- <h1>{{ incomingMessage }}</h1>
+    <div *ngIf="!loading">
 
-<button (click)="test()" >test</button> -->
+  <h2>Welcome to EpiVote</h2>
+  <h5>There is a meeting scheduled for today. </h5>
+  <h5>Choose a role and click launch to proceed.</h5>
 
-<form [formGroup]="roleForm">
-    <ion-item margin-bottom>
+
+
+    <form [formGroup]="roleForm">
+      <ion-item margin-bottom>
         <ion-label color="primary" floating>Role</ion-label>
-        <ion-select [multiple]="false" interface="action-sheet" formControlName="role" >
-           <ion-option [value]="item"  *ngFor="let item of roles" >
-              {{ item.roleName }}
-           </ion-option>
+        <ion-select [multiple]="false" interface="action-sheet" formControlName="role">
+          <ion-option [value]="item" *ngFor="let item of roles">
+            {{ item.roleName }}
+          </ion-option>
         </ion-select>
       </ion-item>
       <p *ngIf="error" style="color:red">You need to enter a role.</p>
       <div text-center>
-          <button ion-button color="dark" (click)="enterMeeting()">Enter meeting</button>
+        <button ion-button color="dark" (click)="enterMeeting()">Enter meeting</button>
       </div>
-</form>
+    </form>
 
+  </div>
 </ion-content>

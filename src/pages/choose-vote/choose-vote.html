@@ -6,25 +6,30 @@
 
 <ion-content>
 
-  <ion-card>
-    <ion-card-content *ngIf="currentQuestion">
-      <h1>09-Nov-18 | Patient {{ currentQuestion.patientNumber }} </h1>
-      <h2 padding style="background-color:#eef2fd">{{ currentQuestion.questionText }}</h2>
-    </ion-card-content>
-  </ion-card>
+  <div *ngIf="loading" text-center>
+    <img src="../../assets/imgs/loader.gif" />
+  </div>
+  <div *ngIf="!loading">
 
-  <ion-list>
+    <ion-card>
+      <ion-card-content *ngIf="currentQuestion">
+        <h1>09-Nov-18 | Patient {{ currentQuestion.patientNumber }} </h1>
+        <h2 padding style="background-color:#eef2fd">{{ currentQuestion.questionText }}</h2>
+      </ion-card-content>
+    </ion-card>
 
-    <div class="choice" *ngFor="let choice of votingChoices">
-      <button class="button-choice" (click)="submitVote(choice.voteChoiceID, choice.voteChoiceDescription)" ion-button
-        full large [style.background-color]="choice.colour">
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/{{choice.smiley}}" />
-        </ion-thumbnail>
-        <h2>{{ choice.voteChoiceDescription }}</h2>
-      </button>
-    </div>
-    
-  </ion-list>
+    <ion-list>
+      <div class="choice" *ngFor="let choice of votingChoices">
+        <button class="button-choice" (click)="submitVote(choice.voteChoiceID, choice.voteChoiceDescription)"
+          ion-button full large [style.background-color]="choice.colour">
+          <ion-thumbnail item-start>
+            <img src="../../assets/imgs/{{choice.smiley}}" />
+          </ion-thumbnail>
+          <h2>{{ choice.voteChoiceDescription }}</h2>
+        </button>
+      </div>
+    </ion-list>
+
+  </div>
 
 </ion-content>
