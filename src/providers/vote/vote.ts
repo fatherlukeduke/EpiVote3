@@ -102,10 +102,10 @@ export class VoteProvider {
     })
   }
 
-  getCurrentQuestionStatus () : Promise<string> {
+  getCurrentQuestion() : Promise<MeetingPatientQuestion> {
     return new Promise ( (resolve) => {
-      this.http.get('https://api.epivote.uk/vote/CheckQuestionStatus/' + this.currentQuestion.meetingPatientQuestionID )
-      .subscribe( (data : string ) => {
+      this.http.get('https://api.epivote.uk/vote/GetQuestion/' + this.currentQuestion.meetingPatientQuestionID )
+      .subscribe( (data : MeetingPatientQuestion ) => {
           resolve(data);
       })
     })

@@ -32,9 +32,9 @@ export class AwaitNextQuestionPage {
   }
 
   checkCurrentQuestionStatus() {
-    this.voteProvider.getCurrentQuestionStatus()
-    .then((status : string) => {
-        if (status == "open"){
+    this.voteProvider.getCurrentQuestion()
+    .then((question : MeetingPatientQuestion) => {
+        if (question.votingOpen){
           this.loading = true;
         } else {
           this.loading = false;
