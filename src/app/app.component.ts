@@ -14,22 +14,6 @@ export class MyApp {
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,  fcm: FCM) {
     platform.ready().then(() => {
-     //Notifications
-    //  fcm.subscribeToTopic('all');
-    //  fcm.getToken().then(token=>{
-    //      console.log(token);
-    //  })
-    //  fcm.onNotification().subscribe(data=>{
-    //    if(data.wasTapped){
-    //      console.log("Received in background: " +  JSON.stringify(data) );
-    //    } else {
-    //      console.log("Received in foreground: " + JSON.stringify(data));
-    //    };
-    //  })
-    //  fcm.onTokenRefresh().subscribe(token=>{
-    //    console.log(token);
-    //  });
-     //end notifications.
       statusBar.styleDefault();
       splashScreen.hide();
     });

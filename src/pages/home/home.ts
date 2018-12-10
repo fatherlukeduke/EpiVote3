@@ -6,14 +6,8 @@ import { VoteChoice , MeetingPatientQuestion, Role} from '../../models/interface
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ChooseVotePage } from './../choose-vote/choose-vote';
 import { stringify } from '@angular/compiler/src/util';
+import { MessagingProvider } from './../../providers/messaging/messaging';
 
-
-/**
- * Generated class for the HomePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -32,7 +26,7 @@ loading : boolean = true;
 incomingMessage : string = "test";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-      public voteProvider: VoteProvider, public formBuilder : FormBuilder, private ref: ChangeDetectorRef) {
+      public voteProvider: VoteProvider, public formBuilder : FormBuilder, private ref: ChangeDetectorRef, public messaging: MessagingProvider) {
 
         this.roleForm = this.formBuilder.group({
           role: ['', Validators.required]
@@ -44,7 +38,7 @@ incomingMessage : string = "test";
         this.loading = false;
        })
 
-       voteProvider.messageChange.subscribe ((value) => {        
+       messaging.messageChange.subscribe ((value) => {        
          this.incomingMessage = "INCOMING!";
          this.ref.detectChanges()
        })

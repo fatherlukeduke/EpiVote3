@@ -5,7 +5,7 @@ import { UtilitiesProvider } from './../utilities/utilities';
 import { Platform } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 import { Subject } from 'rxjs/Subject';
-import { resolveDefinition } from '@angular/core/src/view/util';
+//import { resolveDefinition } from '@angular/core/src/view/util';
 
 
 @Injectable()
@@ -20,39 +20,46 @@ export class VoteProvider {
  public votingChoices : VoteChoice;
  public roles : Role;
  public newPatientFlag : boolean;
- public messageChange : Subject<object> = new Subject<object>();
- public firebaseMessage : object;
+//  public messageChange : Subject<object> = new Subject<object>();
+//  public firebaseMessage : object;
 
   constructor(public http : HttpClient, public utilities : UtilitiesProvider, public platform: Platform, public fcm : FCM) {
     console.log('Hello VoteProvider Provider');
 
-    this.messageChange.subscribe ( (value ) => {
-      this.firebaseMessage = value;
-    })
+  //   this.messageChange.subscribe ( (value) => {
+  //     this.firebaseMessage = value;
+  //   })
 
-    //subscribe to FireBase messages
-    platform.ready().then( ()=> {
-      fcm.subscribeToTopic('all');
-      fcm.getToken().then(token=>{
-          console.log(token);
-      })
-      fcm.onNotification().subscribe(data=>{
-        this.messageChange.next(data);
+  //   //subscribe to FireBase messages
+  //   platform.ready().then( ()=> {
+  //     fcm.subscribeToTopic('all');
+  //     fcm.getToken().then(token=>{
+  //         console.log(token);
+  //     })
+  //     fcm.onNotification().subscribe(data=>{
+  //       this.messageChange.next(data);
         
-        if(data.wasTapped){
-          console.log("Received in background: " + JSON.stringify(data));
-        } else {
-          console.log("Received in foreground: " + JSON.stringify(data));
-        };
-      })
-      fcm.onTokenRefresh().subscribe(token=>{
-        console.log(token);
-      });
-
-    })
+  //       if(data.wasTapped){
+  //         console.log("Received in background: " + JSON.stringify(data));
+  //       } else {
+  //         console.log("Received in foreground: " + JSON.stringify(data));
+  //       };
+  //     })
+  //     fcm.onTokenRefresh().subscribe(token=>{
+  //       console.log(token);
+  //     });
+  //   })
     
-  }
+   }
 
+  getResults() : Promise<Vote> {
+    return new Promise((resolve, reject) => {
+      this.http.get('https://api.epivote.uk/vote/GetVotesForQuestion' + this.currentQuestion.meetingPatientQuestionID)
+        .subscribe ( (data : Vote) => {
+          resolve(data);
+        })
+    })
+  }
 
   setCurrentRole(role : Role){
     this.currentRole = role;

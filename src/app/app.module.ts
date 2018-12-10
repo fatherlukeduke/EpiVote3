@@ -13,6 +13,7 @@ import { AwaitNextQuestionPage} from '../pages/await-next-question/await-next-qu
 import { VoteProvider } from '../providers/vote/vote';
 import { UtilitiesProvider } from '../providers/utilities/utilities';
 import {FCM} from '@ionic-native/fcm'
+import { MessagingProvider } from '../providers/messaging/messaging';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {FCM} from '@ionic-native/fcm'
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     VoteProvider,
     UtilitiesProvider,
-    FCM
+    FCM,
+    MessagingProvider
   ]
 })
 export class AppModule {}

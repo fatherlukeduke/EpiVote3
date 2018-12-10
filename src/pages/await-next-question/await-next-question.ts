@@ -3,13 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { VoteChoice , MeetingPatientQuestion, Role} from '../../models/interfaces';
 import { VoteProvider } from '../../providers/vote/vote';
 import { ChooseVotePage } from '../../pages/choose-vote/choose-vote';
+import { MessagingProvider } from './../../providers/messaging/messaging';
 
-/**
- * Generated class for the AwaitNextQuestionPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -18,13 +13,14 @@ import { ChooseVotePage } from '../../pages/choose-vote/choose-vote';
 })
 export class AwaitNextQuestionPage {
 
-  loading : boolean =true;
+  loading : boolean=true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,  private ref: ChangeDetectorRef, public voteProvider : VoteProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,  
+    private ref: ChangeDetectorRef, public voteProvider : VoteProvider, messaging: MessagingProvider) {
 
     this.checkCurrentQuestionStatus();
 
-    voteProvider.messageChange.subscribe ((value) => {        
+    messaging.messageChange.subscribe ((value) => {        
       this.loading = false;
       this.ref.detectChanges()
     })
