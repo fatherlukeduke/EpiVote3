@@ -30,7 +30,7 @@ export class ConfirmVotePage {
     this.choiceText = navParams.get("choiceText");
     this.currentQuestion = voteProvider.currentQuestion;
 
-    console.log(this.currentQuestion)
+    //console.log(this.currentQuestion)
 
   }
 

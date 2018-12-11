@@ -9,13 +9,14 @@
   <ion-navbar [hideBackButton]="true">
       <img src="../../assets/imgs/vote_icon.png" />
 
-    <ion-title>Results</ion-title>
+    <!-- <ion-title>Results</ion-title> -->
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
   <div *ngIf="loading" text-center>
     <h3>Please wait for voting on this question to close.</h3>
     <img style="width:50%" src="../../assets/imgs/loader.gif" />
@@ -24,7 +25,16 @@
   <div *ngIf="!loading">
     <h3>Voting on this question is now closed.</h3>
 
-    <button ion-button color="dark" (click)="nextQuestion()">Next Question</button>
+    <ion-card>
+        <ion-card-header>
+         Results
+        </ion-card-header>
+        <ion-card-content>
+          <canvas #chartCanvas></canvas>
+        </ion-card-content>
+      </ion-card>
+
+    <button full large ion-button color="dark" (click)="nextQuestion()">Next Question</button>
 
   </div>
 

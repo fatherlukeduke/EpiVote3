@@ -3,30 +3,28 @@ import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 import { Subject } from 'rxjs/Subject';
-/*
-  Generated class for the MessageingProvider provider.
+import { VoteMessage } from './../../models/interfaces';
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+
 @Injectable()
 export class MessagingProvider {
 
   public messageChange : Subject<object> = new Subject<object>();
-  public firebaseMessage : object;
+ // public firebaseMessage : object;
+  public voteMessage : VoteMessage;
 
   constructor(public http: HttpClient, public platform: Platform, public fcm: FCM) {
     console.log('Hello MessageingProvider Provider');
 
-    this.messageChange.subscribe ( (value) => {
-      this.firebaseMessage = value;
+    this.messageChange.subscribe ( (value : VoteMessage) => {
+      this.voteMessage = value;
     })
 
     //subscribe to FireBase messages
     platform.ready().then(() => {
       fcm.subscribeToTopic('all');
       fcm.getToken().then(token => {
-        console.log(token);
+        console.log('New token:' + token);
       })
       fcm.onNotification().subscribe(data => {
         this.messageChange.next(data);
@@ -38,7 +36,7 @@ export class MessagingProvider {
         };
       })
       fcm.onTokenRefresh().subscribe(token => {
-        console.log(token);
+        console.log('Token refresh: ' + token);
       });
     })
 

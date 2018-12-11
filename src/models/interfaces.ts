@@ -26,3 +26,15 @@ export interface Vote {
     meetingPatientQuestionID: number,
     roleID : number
 }
+
+export interface VoteMessage {
+    body:string,
+    MeetingID: number,
+    MeetingPatientQuestionID: number,
+    PatientNumber: number,
+    QuestionNumber: number,
+    QuestionText: string,
+    title:string,
+    VotingOpen: string,
+    wasTapped: boolean
+}
