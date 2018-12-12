@@ -25,37 +25,12 @@ export class VoteProvider {
 
   constructor(public http : HttpClient, public utilities : UtilitiesProvider, public platform: Platform, public fcm : FCM) {
     console.log('Hello VoteProvider Provider');
-
-  //   this.messageChange.subscribe ( (value) => {
-  //     this.firebaseMessage = value;
-  //   })
-
-  //   //subscribe to FireBase messages
-  //   platform.ready().then( ()=> {
-  //     fcm.subscribeToTopic('all');
-  //     fcm.getToken().then(token=>{
-  //         console.log(token);
-  //     })
-  //     fcm.onNotification().subscribe(data=>{
-  //       this.messageChange.next(data);
-        
-  //       if(data.wasTapped){
-  //         console.log("Received in background: " + JSON.stringify(data));
-  //       } else {
-  //         console.log("Received in foreground: " + JSON.stringify(data));
-  //       };
-  //     })
-  //     fcm.onTokenRefresh().subscribe(token=>{
-  //       console.log(token);
-  //     });
-  //   })
-    
-   }
-
-  getResults() : Promise<Vote> {
+  }
+  
+  getResults() : Promise<Array<Vote>> {
     return new Promise((resolve, reject) => {
-      this.http.get('https://api.epivote.uk/vote/GetVotesForQuestion' + this.currentQuestion.meetingPatientQuestionID)
-        .subscribe ( (data : Vote) => {
+      this.http.get('https://api.epivote.uk/vote/GetVotesForQuestion/' + this.currentQuestion.meetingPatientQuestionID)
+        .subscribe ( (data : Array<Vote>) => {
           resolve(data);
         })
     })

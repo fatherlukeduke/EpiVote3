@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { VoteChoice, MeetingPatientQuestion, Role } from '../../models/interfaces';
+import { VoteChoice, MeetingPatientQuestion, Role, Vote, VoteResults } from '../../models/interfaces';
 import { VoteProvider } from '../../providers/vote/vote';
 import { ChooseVotePage } from '../../pages/choose-vote/choose-vote';
 import { MessagingProvider } from './../../providers/messaging/messaging';
@@ -18,6 +18,7 @@ export class AwaitNextQuestionPage {
 
   loading: boolean = true;
   resultsChart: any;
+  public chartData: Array<number> = [0, 0, 0, 0, 0];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private ref: ChangeDetectorRef, public voteProvider: VoteProvider, public messaging: MessagingProvider) {
@@ -29,9 +30,36 @@ export class AwaitNextQuestionPage {
       console.log(message);
       if (message.meetingPatientQuestionID == voteProvider.currentQuestion.meetingPatientQuestionID
         && message.votingOpen == "false") {
-        this.loading = false;
-        this.ref.detectChanges();
-        this.renderChart();
+
+        voteProvider.getResults()
+          .then((results: Array<Vote>) => {
+            this.loading = false;
+            this.ref.detectChanges();
+
+            results.forEach(element => {
+              switch (element.voteChoiceID) {
+                case 5:
+                  this.chartData[0]++;
+                  break;
+                case 4:
+                  this.chartData[1]++;
+                  break;
+                case 3:
+                  this.chartData[2]++;
+                  break;
+                case 2:
+                  this.chartData[3]++;
+                  break;
+                case 1:
+                  this.chartData[4]++;
+                  break;
+              }
+            })
+          })
+          .then(() => {
+            this.renderChart(this.chartData)
+          })
+
       }
     })
   }
@@ -54,40 +82,42 @@ export class AwaitNextQuestionPage {
       })
   }
 
-  renderChart() {
+  renderChart(chartSummaryData: Array<number>) {
     //render chart
     this.resultsChart = new Chart(this.chartCanvas.nativeElement, {
 
-      type: 'bar',
+      type: 'horizontalBar',
       data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["Strongly agree", "Agree", "Neutral", "Disagree", "Stongly disagree"],
         datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
+          label: '',
+          data: chartSummaryData,
           backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
+            '#39a16c',
+            '#bad530',
+            '#feac27',
+            '#ff8c33',
+            '#ff696a'
           ],
           borderColor: [
             'rgba(255,99,132,1)',
             'rgba(54, 162, 235, 1)',
             'rgba(255, 206, 86, 1)',
             'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
+            'rgba(153, 102, 255, 1)'
           ],
           borderWidth: 1
         }]
       },
       options: {
+        legend: {
+          display: false
+        },
         scales: {
           yAxes: [{
             ticks: {
-              beginAtZero: true
+              beginAtZero: true,
+              fontSize: 17
             }
           }]
         }
@@ -102,7 +132,7 @@ export class AwaitNextQuestionPage {
     console.log('ionViewDidLoad AwaitNextQuestionPage');
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.messaging.messageChange.unsubscribe();
   }
 }

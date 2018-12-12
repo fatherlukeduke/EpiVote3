@@ -38,3 +38,12 @@ export interface VoteMessage {
     votingOpen: string,
     wasTapped: boolean
 }
+
+export interface VoteResults {
+    stonglyAgree: number,
+    agree: number,
+    neutral: number,
+    disagree: number,
+    stronglyDisagree: number,
+    average: number
+}

@@ -4,6 +4,7 @@ import { VoteProvider } from '../../providers/vote/vote';
 import { HomePage } from '../home/home';
 import { ChooseVotePage } from './../choose-vote/choose-vote';
 import { AwaitNextQuestionPage } from './../await-next-question/await-next-question';
+import { MeetingPatientQuestion } from '../../models/interfaces';
 
 /**
  * Generated class for the ConfirmVotePage page.
@@ -19,11 +20,12 @@ import { AwaitNextQuestionPage } from './../await-next-question/await-next-quest
 })
 export class ConfirmVotePage {
 
-  public choice : number;
-  public fullChoice : string;
-  public choiceText : string;
-  public currentPatient : number;
-  public currentQuestion;
+  choice : number;
+  fullChoice : string;
+  choiceText : string;
+  currentPatient : number;
+  currentQuestion : MeetingPatientQuestion;
+  isenabled: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public voteProvider: VoteProvider) {
     this.choice = navParams.get("choice");
@@ -40,8 +42,8 @@ export class ConfirmVotePage {
 
 
   confirm() {
+    this.isenabled = false;
     this.voteProvider.submitVote(this.choice)
-     //.then(() =>  this.voteProvider.getNextQuestion() )
      .then(()=> {
       this.navCtrl.push(AwaitNextQuestionPage);
      })

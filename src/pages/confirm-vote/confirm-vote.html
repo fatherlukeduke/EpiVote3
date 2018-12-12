@@ -22,7 +22,7 @@
   <h3>for patient {{ currentQuestion.patientNumber }}</h3>
   
 
-<button color="secondary" (click)="confirm()" ion-button>Confirm</button>
-<button color="danger" (click)="cancel()" ion-button>Cancel</button>
+<button color="secondary" [disabled]="!isenabled" large full (click)="confirm()" ion-button>Confirm</button>
+<button color="danger" [disabled]="!isenabled" large full (click)="cancel()" ion-button>Cancel</button>
 
 </ion-content>
