@@ -27,8 +27,8 @@ export class AwaitNextQuestionPage {
     //incoming message handler
     messaging.messageChange.subscribe((message: VoteMessage) => {
       console.log(message);
-      if (message.MeetingPatientQuestionID == voteProvider.currentQuestion.meetingPatientQuestionID
-        && message.VotingOpen == "false") {
+      if (message.meetingPatientQuestionID == voteProvider.currentQuestion.meetingPatientQuestionID
+        && message.votingOpen == "false") {
         this.loading = false;
         this.ref.detectChanges();
         this.renderChart();

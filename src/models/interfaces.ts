@@ -29,12 +29,12 @@ export interface Vote {
 
 export interface VoteMessage {
     body:string,
-    MeetingID: number,
-    MeetingPatientQuestionID: number,
-    PatientNumber: number,
-    QuestionNumber: number,
-    QuestionText: string,
+    meetingID: number,
+    meetingPatientQuestionID: number,
+    patientNumber: number,
+    questionNumber: number,
+    questionText: string,
     title:string,
-    VotingOpen: string,
+    votingOpen: string,
     wasTapped: boolean
 }
