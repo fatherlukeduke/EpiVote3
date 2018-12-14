@@ -86,7 +86,7 @@ export class AwaitNextQuestionPage {
 
   renderChart(chartSummaryData: Array<number>) {
 
-    this._chartOptions = ChartOptions
+    this._chartOptions =  ChartOptions;
     this._chartOptions.data.datasets[0].data = chartSummaryData;
 
     //render chart
