@@ -6,7 +6,8 @@ import { ChooseVotePage } from '../../pages/choose-vote/choose-vote';
 import { MessagingProvider } from './../../providers/messaging/messaging';
 import { VoteMessage } from './../../models/interfaces';
 import { Chart } from 'chart.js';
-
+import { ChartOptions } from '../../models/config';
+ 
 @IonicPage()
 @Component({
   selector: 'page-await-next-question',
@@ -19,6 +20,7 @@ export class AwaitNextQuestionPage {
   loading: boolean = true;
   resultsChart: any;
   chartData: Array<number> = [0, 0, 0, 0, 0];
+  _chartOptions : any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private ref: ChangeDetectorRef, public voteProvider: VoteProvider, public messaging: MessagingProvider) {
@@ -32,7 +34,7 @@ export class AwaitNextQuestionPage {
         && message.votingOpen == "false") {
 
         voteProvider.getResults()
-          .then((results: Array<Vote>) => {
+          .then((results: Array<VoteResults>) => {
             this.loading = false;
             this.ref.detectChanges();
 
@@ -83,46 +85,12 @@ export class AwaitNextQuestionPage {
   }
 
   renderChart(chartSummaryData: Array<number>) {
-    //render chart
-    this.resultsChart = new Chart(this.chartCanvas.nativeElement, {
 
-      type: 'horizontalBar',
-      data: {
-        labels: ["Strongly agree", "Agree", "Neutral", "Disagree", "Stongly disagree"],
-        datasets: [{
-          label: '',
-          data: chartSummaryData,
-          backgroundColor: [
-            '#39a16c',
-            '#bad530',
-            '#feac27',
-            '#ff8c33',
-            '#ff696a'
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        legend: {
-          display: false
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
-              fontSize: 17
-            }
-          }]
-        }
-      }
-    });
+    this._chartOptions = ChartOptions
+    this._chartOptions.data.datasets[0].data = chartSummaryData;
+
+    //render chart
+    this.resultsChart = new Chart(this.chartCanvas.nativeElement, this._chartOptions );
 
     //refresh screen
     this.ref.detectChanges()

@@ -4,7 +4,8 @@ export interface VoteChoice {
     voteChoiceID : number,
     voteChoiceDescription : string,
     smiley : string,
-    colour : string 
+    colour : string,
+    voteChoiceValue: number
 }
 
 export interface MeetingPatient{
@@ -33,6 +34,7 @@ export interface Vote {
     voteChoiceID : number,
     meetingPatientQuestionID: number,
     roleID : number
+
 }
 
 export interface VoteMessage {
@@ -48,10 +50,9 @@ export interface VoteMessage {
 }
 
 export interface VoteResults {
-    stonglyAgree: number,
-    agree: number,
-    neutral: number,
-    disagree: number,
-    stronglyDisagree: number,
-    average: number
+   meetingPatientQuestionID: number,
+   roleID: number,
+   voteChoiceID: number,
+   voteID : number,
+   voteChoiceValue: number
 }
