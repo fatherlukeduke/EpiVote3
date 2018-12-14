@@ -1,12 +1,12 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ConfirmVotePage } from '../confirm-vote/confirm-vote';
 import { VoteProvider } from '../../providers/vote/vote';
 import { VoteChoice, MeetingPatientQuestion, Role } from '../../models/interfaces';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { ChooseVotePage } from './../choose-vote/choose-vote';
+//import { ChooseVotePage } from './../choose-vote/choose-vote';
 import { stringify } from '@angular/compiler/src/util';
 import { MessagingProvider } from './../../providers/messaging/messaging';
+import { ChoosePatientPage } from '../choose-patient/choose-patient';
 
 
 @IonicPage()
@@ -48,33 +48,33 @@ export class HomePage {
 
   }
 
+  enterMeeting() {
+    if (this.roleForm.value.role) {
+
+      // this.voteProvider.getFirstQuestion(1)
+      //   .then(() => 
+          this.voteProvider.setCurrentRole(this.roleForm.value.role)
+          this.navCtrl.push(ChoosePatientPage);
+
+      console.log(this.roleForm.value.role);
+    } else {
+      this.error = true;
+    }
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
   }
 
 
-  test() {
-    this.incomingMessage = "button worked";
-  }
+  // test() {
+  //   this.incomingMessage = "button worked";
+  // }
 
-  submitVote(choice, choiceText) {
-    this.navCtrl.push(ConfirmVotePage, { choice: choice, choiceText: choiceText })
-  }
-
-  enterMeeting() {
-    if (this.roleForm.value.role) {
+  // submitVote(choice, choiceText) {
+  //   this.navCtrl.push(ConfirmVotePage, { choice: choice, choiceText: choiceText })
+  // }
 
 
-      this.voteProvider.getFirstQuestion(1)
-        .then(() => this.voteProvider.setCurrentRole(this.roleForm.value.role))
-        .then(() => this.navCtrl.push(ChooseVotePage))
-
-      console.log(this.roleForm.value.role);
-    } else {
-      this.error = true;
-    }
-
-  }
 
 }

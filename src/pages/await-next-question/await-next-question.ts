@@ -18,7 +18,7 @@ export class AwaitNextQuestionPage {
 
   loading: boolean = true;
   resultsChart: any;
-  public chartData: Array<number> = [0, 0, 0, 0, 0];
+  chartData: Array<number> = [0, 0, 0, 0, 0];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private ref: ChangeDetectorRef, public voteProvider: VoteProvider, public messaging: MessagingProvider) {

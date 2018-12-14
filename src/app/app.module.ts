@@ -14,6 +14,7 @@ import { VoteProvider } from '../providers/vote/vote';
 import { UtilitiesProvider } from '../providers/utilities/utilities';
 import {FCM} from '@ionic-native/fcm'
 import { MessagingProvider } from '../providers/messaging/messaging';
+import { ChoosePatientPage } from '../pages/choose-patient/choose-patient';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MessagingProvider } from '../providers/messaging/messaging';
     HomePage,
     ConfirmVotePage,
     ChooseVotePage,
-    AwaitNextQuestionPage
+    AwaitNextQuestionPage,
+    ChoosePatientPage
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,8 @@ import { MessagingProvider } from '../providers/messaging/messaging';
     HomePage,
     ConfirmVotePage,
     ChooseVotePage,
-    AwaitNextQuestionPage
+    AwaitNextQuestionPage,
+    ChoosePatientPage
   ],
   providers: [
     StatusBar,

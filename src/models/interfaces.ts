@@ -7,8 +7,16 @@ export interface VoteChoice {
     colour : string 
 }
 
+export interface MeetingPatient{
+    meetingPatientID : number,
+    meetingID : number,
+    patientNumber: number,
+    votingOpen :  number
+}
+
 export interface MeetingPatientQuestion {
     meetingPatientQuestionID : number,
+    meetingPatientID : number,
     meetingID : number,
     patientNumber : number,
     questionNumber : number,

@@ -1,8 +1,8 @@
 import { HttpClient  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { VoteChoice , MeetingPatientQuestion ,Role , Vote} from '../../models/interfaces';
+import { VoteChoice , MeetingPatientQuestion ,Role , Vote, MeetingPatient} from '../../models/interfaces';
 import { UtilitiesProvider } from './../utilities/utilities';
-import { Platform } from 'ionic-angular';
+import { Platform, Menu } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 import { Subject } from 'rxjs/Subject';
 //import { resolveDefinition } from '@angular/core/src/view/util';
@@ -12,10 +12,11 @@ import { Subject } from 'rxjs/Subject';
 export class VoteProvider {
 
  //public currentPatient : number;
- public currentSession : Date;
+ //public currentSession : Date;
  public currentMeeting : number = 1;
  public currentQuestion : MeetingPatientQuestion;
  public currentRole : Role;
+ public currentPatient: number;
 
  public votingChoices : VoteChoice;
  public roles : Role;
@@ -27,6 +28,15 @@ export class VoteProvider {
     console.log('Hello VoteProvider Provider');
   }
   
+  getPatientsForMeeting() : Promise<Array<MeetingPatient>> {
+    return new Promise((resolve, reject) => {
+      this.http.get('https://api.epivote.uk/vote/GetPatientsForMeeting/' + this.currentMeeting)
+        .subscribe ( (data : Array<MeetingPatient>) => {
+          resolve(data);
+        })
+    })
+  }
+
   getResults() : Promise<Array<Vote>> {
     return new Promise((resolve, reject) => {
       this.http.get('https://api.epivote.uk/vote/GetVotesForQuestion/' + this.currentQuestion.meetingPatientQuestionID)
@@ -40,9 +50,9 @@ export class VoteProvider {
     this.currentRole = role;
   }
 
-  getFirstQuestion  (meetingID : number ){
+  getFirstQuestionForPatient () : Promise<MeetingPatientQuestion> {
     return new Promise  ( (resolve) =>{
-      this.http.get('https://api.epivote.uk/vote/getFirstQuestion/' + meetingID )
+      this.http.get('https://api.epivote.uk/vote/getFirstQuestionForPatient/' + this.currentPatient )
       .subscribe( ( data : MeetingPatientQuestion) => {
         this.currentQuestion = data;
         resolve(data);
@@ -50,10 +60,10 @@ export class VoteProvider {
     })
   }
 
-  getNextQuestion( ){
+  getNextQuestion() : Promise<MeetingPatientQuestion>{
     return new Promise  ( (resolve) =>{
       
-      this.http.get('https://api.epivote.uk/vote/getNextQuestion/' + 
+      this.http.get('https://api.epivote.uk/vote/getNextQuestionForPatient/' + 
         this.currentQuestion.meetingID +'/' +  
         this.currentQuestion.patientNumber + '/' +  
         this.currentQuestion.questionNumber)
