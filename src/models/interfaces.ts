@@ -38,21 +38,26 @@ export interface Vote {
 }
 
 export interface VoteMessage {
-    body:string,
+    body :string,
     meetingID: number,
     meetingPatientQuestionID: number,
-    patientNumber: number,
+    meetingPatientID : number,
     questionNumber: number,
     questionText: string,
-    title:string,
+    messageCode : string,
+    title : string,
     votingOpen: string,
     wasTapped: boolean
 }
 
 export interface VoteResults {
-   meetingPatientQuestionID: number,
-   roleID: number,
-   voteChoiceID: number,
-   voteID : number,
-   voteChoiceValue: number
+    stronglyAgreeCount : number,
+    agreeCount : number,
+    neutralCount : number,
+    disagreeCount: number,
+    stronglyDisagreeCount : number,
+    chartData : Array<number>,
+    averageScore : number,
+    votes : Array<Vote>
+
 }

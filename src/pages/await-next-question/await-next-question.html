@@ -17,19 +17,22 @@
 
 <ion-content padding>
 
-  <div *ngIf="loading" text-center>
-    <h3>Please wait for voting on this question to close.</h3>
+  <h3 *ngIf="currentMessage">{{currentMessage}}</h3>
+
+  <div *ngIf="waiting" text-center>
+    
     <img style="width:50%" src="../../assets/imgs/loader.gif" />
   </div>
 
-  <div *ngIf="!loading">
-    <h3>Voting on this question is now closed.</h3>
+  <div *ngIf="!waiting">
+
 
     <ion-card>
         <ion-card-header>
-         Results
+            <h1>{{ voteCount }}</h1>
         </ion-card-header>
         <ion-card-content>
+
           <canvas #chartCanvas></canvas>
         </ion-card-content>
       </ion-card>

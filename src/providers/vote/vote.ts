@@ -1,10 +1,11 @@
 import { HttpClient  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { VoteChoice , MeetingPatientQuestion ,Role , Vote, MeetingPatient} from '../../models/interfaces';
+import { VoteChoice , MeetingPatientQuestion ,Role , Vote, MeetingPatient ,VoteResults} from '../../models/interfaces';
 import { UtilitiesProvider } from './../utilities/utilities';
 import { Platform, Menu } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 import { Subject } from 'rxjs/Subject';
+import { HttpJsonParseError } from '@angular/common/http/src/response';
 //import { resolveDefinition } from '@angular/core/src/view/util';
 
 
@@ -37,10 +38,10 @@ export class VoteProvider {
     })
   }
 
-  getResults() : Promise<Array<Vote>> {
+  getResults() : Promise<VoteResults> {
     return new Promise((resolve, reject) => {
-      this.http.get('https://api.epivote.uk/vote/GetVotesForQuestion/' + this.currentQuestion.meetingPatientQuestionID)
-        .subscribe ( (data : Array<Vote>) => {
+      this.http.get('https://api.epivote.uk/vote/GetResults/' + this.currentQuestion.meetingPatientQuestionID)
+        .subscribe ( (data : VoteResults) => {
           resolve(data);
         })
     })
@@ -61,7 +62,7 @@ export class VoteProvider {
   }
 
   getNextQuestion() : Promise<MeetingPatientQuestion>{
-    return new Promise  ( (resolve) =>{
+    return new Promise  ( (resolve, reject) =>{
       
       this.http.get('https://api.epivote.uk/vote/getNextQuestionForPatient/' + 
         this.currentQuestion.meetingID +'/' +  
@@ -70,7 +71,12 @@ export class VoteProvider {
       .subscribe( (data : MeetingPatientQuestion ) => {
         this.currentQuestion = data;  
         resolve(data);
-      })
+      },
+        ( err ) => {
+            reject (err)
+        }
+      )
+      
     })
   }
   

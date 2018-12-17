@@ -29,11 +29,11 @@ export class MessagingProvider {
       fcm.onNotification().subscribe(data => {
         this.messageChange.next(data);
 
-        if (data.wasTapped) {
-          console.log("Received in background: " + JSON.stringify(data));
-        } else {
-          console.log("Received in foreground: " + JSON.stringify(data));
-        };
+        // if (data.wasTapped) {
+        //   console.log("Received in background: " + JSON.stringify(data));
+        // } else {
+        //   console.log("Received in foreground: " + JSON.stringify(data));
+        // };
       })
       fcm.onTokenRefresh().subscribe(token => {
         console.log('Token refresh: ' + token);

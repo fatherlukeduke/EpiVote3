@@ -7,7 +7,7 @@ import { MessagingProvider } from './../../providers/messaging/messaging';
 import { VoteMessage } from './../../models/interfaces';
 import { Chart } from 'chart.js';
 import { ChartOptions } from '../../models/config';
- 
+
 @IonicPage()
 @Component({
   selector: 'page-await-next-question',
@@ -17,62 +17,29 @@ export class AwaitNextQuestionPage {
 
   @ViewChild('chartCanvas') chartCanvas;
 
-  loading: boolean = true;
+  waiting: boolean = true;
   resultsChart: any;
+  voteCount: string;
+  currentMessage: string;
   chartData: Array<number> = [0, 0, 0, 0, 0];
-  _chartOptions : any;
+  _chartOptions: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private ref: ChangeDetectorRef, public voteProvider: VoteProvider, public messaging: MessagingProvider) {
 
     this.checkCurrentQuestionStatus();
 
-    //incoming message handler
-    messaging.messageChange.subscribe((message: VoteMessage) => {
-      console.log(message);
-      if (message.meetingPatientQuestionID == voteProvider.currentQuestion.meetingPatientQuestionID
-        && message.votingOpen == "false") {
 
-        voteProvider.getResults()
-          .then((results: Array<VoteResults>) => {
-            this.loading = false;
-            this.ref.detectChanges();
-
-            results.forEach(element => {
-              switch (element.voteChoiceID) {
-                case 5:
-                  this.chartData[0]++;
-                  break;
-                case 4:
-                  this.chartData[1]++;
-                  break;
-                case 3:
-                  this.chartData[2]++;
-                  break;
-                case 2:
-                  this.chartData[3]++;
-                  break;
-                case 1:
-                  this.chartData[4]++;
-                  break;
-              }
-            })
-          })
-          .then(() => {
-            this.renderChart(this.chartData)
-          })
-
-      }
-    })
   }
 
   checkCurrentQuestionStatus() {
     this.voteProvider.getCurrentQuestion()
       .then((question: MeetingPatientQuestion) => {
         if (question.votingOpen) {
-          this.loading = true;
+          this.waiting = true;
+          this.currentMessage = 'Please wait for voting on this question to close.'
         } else {
-          this.loading = false;
+          this.waiting = false;
         }
       })
   }
@@ -82,17 +49,22 @@ export class AwaitNextQuestionPage {
       .then(() => {
         this.navCtrl.push(ChooseVotePage)
       })
+      .catch(error => {
+        if (error.code = 404) {
+          this.waiting = true;
+          this.currentMessage = 'There are no more questions for this patient.'
+          this.ref.detectChanges();
+        }
+      })
   }
 
   renderChart(chartSummaryData: Array<number>) {
 
-    this._chartOptions =  ChartOptions;
+    this._chartOptions = ChartOptions;
     this._chartOptions.data.datasets[0].data = chartSummaryData;
 
     //render chart
-    this.resultsChart = new Chart(this.chartCanvas.nativeElement, this._chartOptions );
-
-    //refresh screen
+    this.resultsChart = new Chart(this.chartCanvas.nativeElement, this._chartOptions);
     this.ref.detectChanges()
   }
 
@@ -100,7 +72,40 @@ export class AwaitNextQuestionPage {
     console.log('ionViewDidLoad AwaitNextQuestionPage');
   }
 
-  ngOnDestroy() {
+  ionViewWillEnter() {
+    //incoming message handler
+    this.messaging.messageChange.subscribe((message: VoteMessage) => {
+      console.log(message);
+
+      //voting closed for this question
+      if (message.meetingPatientQuestionID == this.voteProvider.currentQuestion.meetingPatientQuestionID
+        && message.messageCode == 'questionclosed') {
+
+        this.voteProvider.getResults()
+          .then((results: VoteResults) => {
+            this.waiting = false;
+            this.currentMessage = 'Voting on this question is now closed.';
+            this.ref.detectChanges();
+            this.renderChart(results.chartData);
+            this.voteCount = "Average score: " + results.averageScore.toFixed(1);
+            this.ref.detectChanges();
+          })
+      }
+
+      //voting closed for current patient
+
+
+      //meeting over
+
+
+    })
+  }
+
+  ionViewWillLeave() {
     this.messaging.messageChange.unsubscribe();
   }
+
+  ///ngOnDestroy() {
+    //this.messaging.messageChange.unsubscribe();
+  //}
 }
