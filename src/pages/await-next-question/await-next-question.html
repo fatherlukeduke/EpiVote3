@@ -19,14 +19,11 @@
 
   <h3 *ngIf="currentMessage">{{currentMessage}}</h3>
 
-  <div *ngIf="waiting" text-center>
-    
+  <div *ngIf="waiting" text-center>   
     <img style="width:50%" src="../../assets/imgs/loader.gif" />
   </div>
 
-  <div *ngIf="!waiting">
-
-
+  <div *ngIf="showResults">
     <ion-card>
         <ion-card-header>
             <h1>{{ voteCount }}</h1>
@@ -39,6 +36,10 @@
 
     <button full large ion-button color="dark" (click)="nextQuestion()">Next Question</button>
 
+  </div>
+
+  <div *ngIf="nextPatient">
+    <button full large ion-button color="dark" (click)="chooseNextPatient()">Next Patient</button>
   </div>
 
 </ion-content>

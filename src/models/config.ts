@@ -33,6 +33,12 @@ export let ChartOptions = {
                     beginAtZero: true,
                     fontSize: 17
                 }
+            }],
+            xAxes :[{
+                ticks: {
+                    beginAtZero: true,
+                    fontSize: 17
+                }
             }]
         }
     }

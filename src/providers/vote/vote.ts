@@ -12,8 +12,6 @@ import { HttpJsonParseError } from '@angular/common/http/src/response';
 @Injectable()
 export class VoteProvider {
 
- //public currentPatient : number;
- //public currentSession : Date;
  public currentMeeting : number = 1;
  public currentQuestion : MeetingPatientQuestion;
  public currentRole : Role;
@@ -32,11 +30,23 @@ export class VoteProvider {
   getPatientsForMeeting() : Promise<Array<MeetingPatient>> {
     return new Promise((resolve, reject) => {
       this.http.get('https://api.epivote.uk/vote/GetPatientsForMeeting/' + this.currentMeeting)
-        .subscribe ( (data : Array<MeetingPatient>) => {
-          resolve(data);
+        .subscribe ( (data : Array<MeetingPatient>) => {      
+            resolve(data);       
         })
     })
   }
+
+ getCurrentPatient() : Promise<MeetingPatient> {
+  return new Promise((resolve, reject) => {
+    this.http.get('https://api.epivote.uk/vote/GetPatientsForMeeting/' + this.currentMeeting)
+      .subscribe ( (data : Array<MeetingPatient>) => {
+          let singlePatient : MeetingPatient = data.find(patient => {
+              return patient.meetingPatientID ==this.currentPatient;
+          })
+          resolve(singlePatient);      
+      })
+  })
+ }
 
   getResults() : Promise<VoteResults> {
     return new Promise((resolve, reject) => {
@@ -75,8 +85,7 @@ export class VoteProvider {
         ( err ) => {
             reject (err)
         }
-      )
-      
+      )   
     })
   }
   
