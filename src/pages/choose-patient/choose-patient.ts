@@ -30,7 +30,6 @@ export class ChoosePatientPage {
   
   }
 
-
  choosePatient(meetingPatientID : number){
     this.voteProvider.currentPatient = meetingPatientID;
     this.voteProvider.getFirstQuestionForPatient()
