@@ -75,7 +75,7 @@ export class VoteProvider {
     return new Promise  ( (resolve, reject) =>{
       
       this.http.get('https://api.epivote.uk/vote/getNextQuestionForPatient/' + 
-        this.currentQuestion.meetingID +'/' +  
+        this.currentQuestion.meetingPatientID +'/' +  
         this.currentQuestion.patientNumber + '/' +  
         this.currentQuestion.questionNumber)
       .subscribe( (data : MeetingPatientQuestion ) => {

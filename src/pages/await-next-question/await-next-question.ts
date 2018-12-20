@@ -25,7 +25,6 @@ export class AwaitNextQuestionPage {
   resultsChart: any;
   voteCount: string;
   currentMessage: string;
-  //chartData: Array<number> = [0, 0, 0, 0, 0];
   _chartOptions: any;
   messageSub : Subscription;
 
@@ -57,7 +56,7 @@ export class AwaitNextQuestionPage {
          this.showResults = false;
          this.nextPatient = true;
          
-         this.currentMessage = 'The voting has closed for this patient.';
+         this.currentMessage = 'The voting has closed for Patient ' + this.voteProvider.currentPatient;
          this.ref.detectChanges();
 
       }
