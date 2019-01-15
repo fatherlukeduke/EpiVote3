@@ -22,21 +22,21 @@ export class ChoosePatientPage {
   loading : boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public voteProvider: VoteProvider) {
-    this.voteProvider.getPatientsForMeeting()
-      .then( (results) => {
-        this.patients = results
-        this.loading = false;
-      })
+    // this.voteProvider.getPatientsForMeeting()
+    //   .then( (results) => {
+    //     this.patients = results
+    //     this.loading = false;
+    //   })
   
   }
 
- choosePatient(meetingPatientID : number){
-    this.voteProvider.currentPatient = meetingPatientID;
-    this.voteProvider.getFirstQuestionForPatient()
-      .then(() => {
-        this.navCtrl.push(ChooseVotePage);
-      })
- }
+//  choosePatient(meetingPatientID : number){
+//     this.voteProvider.currentPatient = meetingPatientID;
+//     this.voteProvider.getFirstQuestionForPatient()
+//       .then(() => {
+//         this.navCtrl.push(ChooseVotePage);
+//       })
+//  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChoosePatientPage');

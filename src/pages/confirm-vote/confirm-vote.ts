@@ -31,9 +31,6 @@ export class ConfirmVotePage {
     this.choice = navParams.get("choice");
     this.choiceText = navParams.get("choiceText");
     this.currentQuestion = voteProvider.currentQuestion;
-
-    //console.log(this.currentQuestion)
-
   }
 
   ionViewDidLoad() {
@@ -43,6 +40,7 @@ export class ConfirmVotePage {
 
   confirm() {
     this.isenabled = false;
+    this.voteProvider.lastMeetingPatientQuestionID = this.currentQuestion.meetingPatientQuestionID;
     this.voteProvider.submitVote(this.choice)
      .then(()=> {
       this.navCtrl.push(AwaitNextQuestionPage);

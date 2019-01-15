@@ -15,6 +15,7 @@ import { UtilitiesProvider } from '../providers/utilities/utilities';
 import {FCM} from '@ionic-native/fcm'
 import { MessagingProvider } from '../providers/messaging/messaging';
 import { ChoosePatientPage } from '../pages/choose-patient/choose-patient';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ChoosePatientPage } from '../pages/choose-patient/choose-patient';
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

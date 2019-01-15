@@ -20,7 +20,7 @@ export class AwaitNextQuestionPage {
   @ViewChild('chartCanvas') chartCanvas;
 
   waiting: boolean = true;
-  nextPatient: boolean = false;
+  //nextPatient: boolean = false;
   showResults: boolean = false;
   resultsChart: any;
   voteCount: string;
@@ -32,58 +32,75 @@ export class AwaitNextQuestionPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private ref: ChangeDetectorRef, public voteProvider: VoteProvider, public messaging: MessagingProvider) {
 
-    this.checkCurrentQuestionStatus();
+    this.getCurrentQuestion();
   }
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter')
     //incoming message handler
     this.messageSub = this.messaging.messageChange.subscribe((message: VoteMessage) => {
-      console.log(message);
+      console.log('Incoming mesage: ' + JSON.stringify(message));
+      console.log('message block, CurrentQuestionID: ' + this.voteProvider.currentMeetingPatientQuestionID)
+
+      if (message.messageCode == 'question-open') {
+        this.getCurrentQuestion();
+      }
 
       //voting closed for this question
-      if (message.meetingPatientQuestionID == this.voteProvider.currentQuestion.meetingPatientQuestionID
-        && message.messageCode == 'questionclosed') {
-        console.log('Question closed');
-        this.getResults();
+      if (message.meetingPatientQuestionID == this.voteProvider.currentMeetingPatientQuestionID
+        && message.messageCode == 'voting-complete') {
+        //console.log('Question closed');
+         this.getResults();
       }
+
+          //meeting over
+          // if (message.meetingID == this.voteProvider.currentQuestion.meetingID
+          //   && message.messageCode == 'meeting-closed') {
+    
+          // }
 
       //voting closed for current patient
-      if (message.meetingPatientID == this.voteProvider.currentQuestion.meetingPatientID
-        && message.messageCode == 'patientclosed') {
-         console.log('Patient closed')
-         this.waiting = false;
-         this.showResults = false;
-         this.nextPatient = true;
+      // if (message.meetingPatientID == this.voteProvider.currentQuestion.meetingPatientID
+      //   && message.messageCode == 'patientclosed') {
+      //    console.log('Patient closed')
+      //    this.waiting = false;
+      //    this.showResults = false;
+      //    this.nextPatient = true;
          
-         this.currentMessage = 'The voting has closed for Patient ' + this.voteProvider.currentPatient;
-         this.ref.detectChanges();
+      //    this.currentMessage = 'The voting has closed for this patient.';
+      //    this.ref.detectChanges();
 
-      }
+      // }
 
-      //meeting over
-      if (message.meetingID == this.voteProvider.currentQuestion.meetingID
-        && message.messageCode == 'meetingclosed') {
-
-      }
+  
 
     })
   }
 
-  checkCurrentQuestionStatus() {
-    this.voteProvider.getCurrentQuestion()
-      .then((question: MeetingPatientQuestion) => {
-        if (question.votingOpen) {
-          this.waiting = true;
-          this.showResults = false;
-          this.currentMessage = 'Please wait for voting on this question to close.'
-        } else {
-          this.waiting = false;
-          this.showResults = true;
-          this.currentMessage = '';
-          this.getResults();
+  getCurrentQuestion(){
+    this.voteProvider.getActiveQuestion()
+      .then((data : MeetingPatientQuestion) => {
+          console.log(data);
+          
+          if (data.meetingPatientQuestionID === this.voteProvider.lastMeetingPatientQuestionID) {
+            this.waitForNewQuestion();
+          } else {
+            this.navCtrl.push(ChooseVotePage);
+          }  
+      })
+      .catch( (err) => {
+        if(err.code = 404) {  //no active question
+          console.log('No active question')
+          this.waitForNewQuestion();
         }
       })
+  }
+
+  waitForNewQuestion(){
+    this.waiting = true;
+    this.showResults = false;
+    this.currentMessage = 'No question currently open for voting.  Waiting.... '
+    this.ref.detectChanges();
   }
 
   getResults(){
@@ -99,32 +116,7 @@ export class AwaitNextQuestionPage {
     })
   }
 
-  nextQuestion() {
-    this.voteProvider.getCurrentPatient()
-      .then(patient => console.log(patient) )
 
-    console.log('Current patient: ' + this.voteProvider.getCurrentPatient())
-    this.voteProvider.getNextQuestion()
-      .then(() => {
-        this.navCtrl.push(ChooseVotePage)
-      })
-      .catch(error => {
-        if (error.code = 404) {
-          this.voteProvider.getCurrentPatient()
-            .then(patient => {
-
-            })
-          this.waiting = true;
-          this.showResults = false;
-          this.currentMessage = 'Awaiting further questions for this patient.'
-          this.ref.detectChanges();
-        }
-      })
-  }
-
-  chooseNextPatient(){
-    this.navCtrl.push(ChoosePatientPage);
-  }
   renderChart(chartSummaryData: Array<number>) {
 
     this._chartOptions = ChartOptions;
@@ -133,6 +125,11 @@ export class AwaitNextQuestionPage {
     //render chart
     this.resultsChart = new Chart(this.chartCanvas.nativeElement, this._chartOptions);
     this.ref.detectChanges()
+  }
+
+  nextQuestion(){
+    //check if any question open
+    this.getCurrentQuestion();
   }
 
   ionViewDidLoad() {
@@ -144,5 +141,52 @@ export class AwaitNextQuestionPage {
     console.log('ionViewWillLeave')
     this.messageSub.unsubscribe();
   }
+
+
+  // checkCurrentQuestionStatus() {
+  //   this.voteProvider.getCurrentQuestion()
+  //     .then((question: MeetingPatientQuestion) => {
+  //       if (question.votingOpen) {
+  //         this.waiting = true;
+  //         this.showResults = false;
+  //         this.currentMessage = 'Please wait for voting on this question to close.'
+  //       } else {
+  //         this.waiting = false;
+  //         this.showResults = true;
+  //         this.currentMessage = '';
+  //         this.getResults();
+  //       }
+  //     })
+  // }
+
+
+  // nextQuestion() {
+  //   this.voteProvider.getCurrentPatient()
+  //     .then(patient => console.log(patient) )
+
+  //   console.log('Current patient: ' + this.voteProvider.getCurrentPatient())
+  //   this.voteProvider.getNextQuestion()
+  //     .then(() => {
+  //       this.navCtrl.push(ChooseVotePage)
+  //     })
+  //     .catch(error => {
+  //       if (error.code = 404) {
+  //         this.voteProvider.getCurrentPatient()
+  //           .then(patient => {
+
+  //           })
+  //         this.waiting = true;
+  //         this.showResults = false;
+  //         this.currentMessage = 'Awaiting further questions for this patient.'
+  //         this.ref.detectChanges();
+  //       }
+  //     })
+  // }
+
+  // chooseNextPatient(){
+  //   this.navCtrl.push(ChoosePatientPage);
+  // }
+
+
 
 }

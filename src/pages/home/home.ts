@@ -7,6 +7,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { stringify } from '@angular/compiler/src/util';
 import { MessagingProvider } from './../../providers/messaging/messaging';
 import { ChoosePatientPage } from '../choose-patient/choose-patient';
+import { AwaitNextQuestionPage } from './../await-next-question/await-next-question';
 
 
 @IonicPage()
@@ -19,7 +20,7 @@ export class HomePage {
   currentPatient: number;
   votingChoices: VoteChoice;
   currentQuestion: MeetingPatientQuestion;
-  roles: Role;
+  roles: Array<Role>;
   roleForm: FormGroup;
   error: boolean = false;
   loading: boolean = true;
@@ -33,7 +34,7 @@ export class HomePage {
     });
 
     this.voteProvider.getRoles()
-      .then((data: Role) => {
+      .then((data: Array<Role>) => {
         this.roles = data;        
       })
       .then(() => {
@@ -54,7 +55,7 @@ export class HomePage {
       // this.voteProvider.getFirstQuestion(1)
       //   .then(() => 
           this.voteProvider.setCurrentRole(this.roleForm.value.role)
-          this.navCtrl.push(ChoosePatientPage);
+          this.navCtrl.push(AwaitNextQuestionPage);
 
       console.log(this.roleForm.value.role);
     } else {

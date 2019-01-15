@@ -22,7 +22,8 @@ export interface MeetingPatientQuestion {
     patientNumber : number,
     questionNumber : number,
     questionText : number,
-    votingOpen : boolean
+    votingOpen : boolean,
+    votingComplete: boolean
 }
 
 export interface Role {
