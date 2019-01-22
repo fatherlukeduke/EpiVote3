@@ -14,7 +14,6 @@ import { VoteProvider } from '../providers/vote/vote';
 import { UtilitiesProvider } from '../providers/utilities/utilities';
 import {FCM} from '@ionic-native/fcm'
 import { MessagingProvider } from '../providers/messaging/messaging';
-import { ChoosePatientPage } from '../pages/choose-patient/choose-patient';
 import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
@@ -23,8 +22,7 @@ import { IonicStorageModule } from '@ionic/storage';
     HomePage,
     ConfirmVotePage,
     ChooseVotePage,
-    AwaitNextQuestionPage,
-    ChoosePatientPage
+    AwaitNextQuestionPage
   ],
   imports: [
     BrowserModule,
@@ -38,8 +36,7 @@ import { IonicStorageModule } from '@ionic/storage';
     HomePage,
     ConfirmVotePage,
     ChooseVotePage,
-    AwaitNextQuestionPage,
-    ChoosePatientPage
+    AwaitNextQuestionPage
   ],
   providers: [
     StatusBar,
