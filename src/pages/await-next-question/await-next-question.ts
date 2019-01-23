@@ -8,6 +8,8 @@ import { VoteMessage } from './../../models/interfaces';
 import { Chart } from 'chart.js';
 import { ChartOptions } from '../../models/config';
 import { Subscription } from 'rxjs/Subscription';
+import { Platform } from 'ionic-angular';
+
 
 @IonicPage()
 @Component({
@@ -26,12 +28,17 @@ export class AwaitNextQuestionPage {
   currentMessage: string;
   _chartOptions: any;
   messageSub : Subscription;
+  resumeListener: Subscription;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private ref: ChangeDetectorRef, public voteProvider: VoteProvider, public messaging: MessagingProvider) {
+    private ref: ChangeDetectorRef, public voteProvider: VoteProvider, public messaging: MessagingProvider, public platform : Platform) {
 
     this.getCurrentQuestion();
+
+    this.resumeListener =   platform.resume.subscribe ( (e) => {
+      this.getCurrentQuestion();
+    });
   }
 
   ionViewWillEnter() {
@@ -75,7 +82,7 @@ export class AwaitNextQuestionPage {
       .catch( (err) => {
         if(err.code = 404) {  //no active question
           console.log('No active question')
-          this.waitForNewQuestion('No question currently open for voting.  Waiting.... ');
+          this.waitForNewQuestion('Waiting for a new question to open for voting.... ');
         }
       })
   }
@@ -116,6 +123,7 @@ export class AwaitNextQuestionPage {
     this.getCurrentQuestion();
   }
 
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad AwaitNextQuestionPage');
   }
@@ -124,6 +132,10 @@ export class AwaitNextQuestionPage {
   ionViewWillLeave() {
     console.log('ionViewWillLeave')
     this.messageSub.unsubscribe();
+    this.resumeListener.unsubscribe();
   }
+
+  
+
 
 }
