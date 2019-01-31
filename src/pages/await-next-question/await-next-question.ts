@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { VoteChoice, MeetingPatientQuestion, Role, Vote, VoteResults } from '../../models/interfaces';
+import {  MeetingPatientQuestion,   VoteResults } from '../../models/interfaces';
 import { VoteProvider } from '../../providers/vote/vote';
 import { ChooseVotePage } from '../../pages/choose-vote/choose-vote';
 import { MessagingProvider } from './../../providers/messaging/messaging';
