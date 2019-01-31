@@ -29,7 +29,8 @@ export class AwaitNextQuestionPage {
   _chartOptions: any;
   messageSub : Subscription;
   resumeListener: Subscription;
-
+  currentQuestionText: string;
+  currentPatientNumber : number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private ref: ChangeDetectorRef, public voteProvider: VoteProvider, public messaging: MessagingProvider, public platform : Platform) {
@@ -99,9 +100,11 @@ export class AwaitNextQuestionPage {
     .then((results: VoteResults) => {
       this.waiting = false;
       this.showResults = true;
-      this.currentMessage = 'Voting on this question is now closed.';
+      this.currentMessage = 'Voting on this question closed.';
       this.ref.detectChanges();
       this.renderChart(results.chartData);
+      this.currentQuestionText = results.questionText;
+      this.currentPatientNumber = results.patientNumber;
       this.voteCount = "Average score: " + results.averageScore.toFixed(1);
       this.ref.detectChanges();
     })

@@ -128,63 +128,6 @@ export class VoteProvider {
     })
   }
 
-  // getPatientsForMeeting() : Promise<Array<MeetingPatient>> {
-  //   return new Promise((resolve, reject) => {
-  //     this.http.get('https://api.epivote.uk/vote/GetPatientsForMeeting/' + this.currentMeeting)
-  //       .subscribe ( (data : Array<MeetingPatient>) => {      
-  //           resolve(data);       
-  //       })
-  //   })
-  // }
-
-  //  getCurrentPatient() : Promise<MeetingPatient> {
-  //   return new Promise((resolve, reject) => {
-  //     this.http.get('https://api.epivote.uk/vote/GetPatientsForMeeting/' + this.currentMeeting)
-  //       .subscribe ( (data : Array<MeetingPatient>) => {
-  //           let singlePatient : MeetingPatient = data.find(patient => {
-  //               return patient.meetingPatientID ==this.currentPatient;
-  //           })
-  //           resolve(singlePatient);      
-  //       })
-  //   })
-  //  }
-
-
-  // getCurrentQuestion() : Promise<MeetingPatientQuestion> {
-  //   return new Promise ( (resolve) => {
-  //     this.http.get('https://api.epivote.uk/vote/GetQuestion/' + this.currentQuestion.meetingPatientQuestionID )
-  //     .subscribe( (data : MeetingPatientQuestion ) => {
-  //         resolve(data);
-  //     })
-  //   })
-  // }
-
-  // getNextQuestion() : Promise<MeetingPatientQuestion>{
-  //   return new Promise  ( (resolve, reject) =>{
-
-  //     this.http.get('https://api.epivote.uk/vote/getNextQuestionForPatient/' + 
-  //       this.currentQuestion.meetingPatientID +'/' +  
-  //       this.currentQuestion.patientNumber + '/' +  
-  //       this.currentQuestion.questionNumber)
-  //     .subscribe( (data : MeetingPatientQuestion ) => {
-  //       this.currentQuestion = data;  
-  //       resolve(data);
-  //     },
-  //       (err) => {
-  //           reject (err)
-  //       }
-  //     )   
-  //   })
-  // }
-  // getFirstQuestionForPatient () : Promise<MeetingPatientQuestion> {
-  //   return new Promise  ( (resolve) =>{
-  //     this.http.get('https://api.epivote.uk/vote/getFirstQuestionForPatient/' + this.currentPatient )
-  //     .subscribe( ( data : MeetingPatientQuestion) => {
-  //       this.currentQuestion = data;
-  //       resolve(data);
-  //     })
-  //   })
-  // }
 
 
 }
