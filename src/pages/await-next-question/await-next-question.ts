@@ -100,7 +100,7 @@ export class AwaitNextQuestionPage {
     .then((results: VoteResults) => {
       this.waiting = false;
       this.showResults = true;
-      this.currentMessage = 'Voting on this question closed.';
+      this.currentMessage = 'Voting on this question has closed.';
       this.ref.detectChanges();
       this.renderChart(results.chartData);
       this.currentQuestionText = results.questionText;

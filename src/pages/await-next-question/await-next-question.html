@@ -1,52 +1,39 @@
-<!--
-  Generated template for the AwaitNextQuestionPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header >
-
+<ion-header>
   <ion-navbar [hideBackButton]="true">
     <img style="display:inline-block" src="../../assets/imgs/icon.png" />
     <h1 class="nav-title" margin-left>EpiVote</h1>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
+<ion-content >
 
-  <h3 *ngIf="currentMessage">{{currentMessage}}</h3>
+  <h3 padding *ngIf="currentMessage">{{currentMessage}}</h3>
 
-  <div *ngIf="waiting" text-center>   
+  <div padding *ngIf="waiting" text-center>
     <img style="width:50%" src="../../assets/imgs/loader.gif" />
   </div>
 
+  <!-- vote  results -->
+  <!--------------------------------------------------->
   <div *ngIf="showResults">
 
-  <ion-card>
-    <ion-card-content>
-      <h1 text-center> Patient {{ currentPatientNumber }} </h1>
-      <h1 padding style="background-color:#eef2fd">{{ currentQuestionText }}</h1>
-    </ion-card-content>
-  </ion-card>
+    <ion-card>
+      <ion-card-content>
+        <h1 text-center> Patient {{ currentPatientNumber }} </h1>
+        <h1 padding style="background-color:#eef2fd">{{ currentQuestionText }}</h1>
+      </ion-card-content>
+    </ion-card>
 
     <ion-card>
-        <ion-card-header>
-            <h1>{{ voteCount }}</h1>
-        </ion-card-header>
-        <ion-card-content>
-
-          <canvas #chartCanvas></canvas>
-        </ion-card-content>
-      </ion-card>
-
-    <!-- <button full large ion-button color="dark" (click)="nextQuestion()">Next Question</button> -->
+      <ion-card-header>
+        <h1>{{ voteCount }}</h1>
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #chartCanvas></canvas>
+      </ion-card-content>
+    </ion-card>
 
   </div>
-
-  <!-- <div *ngIf="nextPatient">
-    <button full large ion-button color="dark" (click)="chooseNextPatient()">Next Patient</button>
-  </div> -->
 
 </ion-content>
