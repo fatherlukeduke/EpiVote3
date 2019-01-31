@@ -23,6 +23,14 @@
   </div>
 
   <div *ngIf="showResults">
+
+  <ion-card>
+    <ion-card-content>
+      <h1 text-center> Patient {{ currentPatientNumber }} </h1>
+      <h1 padding style="background-color:#eef2fd">{{ currentQuestionText }}</h1>
+    </ion-card-content>
+  </ion-card>
+
     <ion-card>
         <ion-card-header>
             <h1>{{ voteCount }}</h1>
@@ -33,7 +41,7 @@
         </ion-card-content>
       </ion-card>
 
-    <button full large ion-button color="dark" (click)="nextQuestion()">Next Question</button>
+    <!-- <button full large ion-button color="dark" (click)="nextQuestion()">Next Question</button> -->
 
   </div>
 

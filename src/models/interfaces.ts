@@ -59,6 +59,8 @@ export interface VoteResults {
     stronglyDisagreeCount : number,
     chartData : Array<number>,
     averageScore : number,
+    questionText: string,
+    patientNumber : number,
     votes : Array<Vote>
 
 }
