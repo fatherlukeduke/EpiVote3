@@ -1,12 +1,17 @@
 {
-  "name": "Ionic",
-  "short_name": "Ionic",
+  "name": "EpiVote",
+  "short_name": "EpiVote",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{
-    "src": "assets/imgs/logo.png",
-    "sizes": "512x512",
+    "src": "assets/imgs/icon192.png",
+    "sizes": "192x192",
     "type": "image/png"
+  },
+  {
+    "src": "assets/imgs/icon144.png",
+    "type": "image/png",
+    "sizes": "144x144"
   }],
   "background_color": "#4e8ef7",
   "theme_color": "#4e8ef7"
