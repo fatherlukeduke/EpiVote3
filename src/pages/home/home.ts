@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { VoteProvider } from '../../providers/vote/vote';
 import { VoteChoice, MeetingPatientQuestion, Role } from '../../models/interfaces';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-//import { ChooseVotePage } from './../choose-vote/choose-vote';
 import { stringify } from '@angular/compiler/src/util';
 import { MessagingProvider } from './../../providers/messaging/messaging';
 import { AwaitNextQuestionPage } from './../await-next-question/await-next-question';
