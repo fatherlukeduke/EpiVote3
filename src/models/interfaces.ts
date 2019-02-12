@@ -1,3 +1,4 @@
+import { DateTime } from "ionic-angular";
 
 
 export interface VoteChoice {
@@ -6,6 +7,14 @@ export interface VoteChoice {
     smiley : string,
     colour : string,
     voteChoiceValue: number
+}
+
+export interface Meeting {
+    meetingCode: string,
+    meetingDate: DateTime,
+    meetingDescription: string,
+    meetingID: number,
+    meetingOpen : boolean
 }
 
 export interface MeetingPatient{

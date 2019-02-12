@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { VoteChoice, MeetingPatientQuestion, Role, Vote, VoteResults } from '../../models/interfaces';
+import { VoteChoice, MeetingPatientQuestion, Role, Vote, VoteResults, Meeting } from '../../models/interfaces';
 import { UtilitiesProvider } from './../utilities/utilities';
 import { Platform, Menu } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
@@ -16,7 +16,7 @@ import { initDomAdapter } from '@angular/platform-browser/src/browser';
 @Injectable()
 export class VoteProvider {
 
-  public currentMeeting: number = 1;
+  public activeMeeting: Meeting;
   public currentQuestion: MeetingPatientQuestion;
   public lastQuestion : MeetingPatientQuestion;
   public currentRole: Role;
@@ -45,13 +45,11 @@ export class VoteProvider {
         this.storage.set('completedQuestions', "hello")
        //}
      })
-   
   }
 
   getCompletedQuestions() : Promise<string> {
     return this.storage.get('completedQuestions')
   }
-
 
   setHaveVoted(meetingPatientQuestionID: number) {
     this.completedQuestions.push(meetingPatientQuestionID);
@@ -79,7 +77,7 @@ export class VoteProvider {
 
   getActiveQuestion(): Promise<MeetingPatientQuestion> {
     return new Promise((resolve, reject) => {
-      this.http.get('https://api.epivote.uk/vote/GetCurrentQuestionForMeeting/' + this.currentMeeting)
+      this.http.get('https://api.epivote.uk/vote/GetCurrentQuestionForMeeting/' + this.activeMeeting.meetingID)
         .subscribe((data: MeetingPatientQuestion) => {
           this.currentQuestion = data;
           this.currentMeetingPatientQuestionID = data.meetingPatientQuestionID;
@@ -109,6 +107,35 @@ export class VoteProvider {
           this.votingChoices = data;
           resolve(data);
         })
+    })
+  }
+
+  getMeeting(meetingID): Promise<Meeting> {
+    return new Promise((resolve) => {
+      this.http.get('https://api.epivote.uk/vote/getMeeting/' + meetingID)
+        .subscribe((data: Meeting) => {
+          this.activeMeeting = data;
+          resolve(data);
+        })
+    }) 
+  }
+  
+  getMeetings(): Promise<Array<Meeting>> {
+    return new Promise((resolve) => {
+      this.http.get('https://api.epivote.uk/vote/getMeetings' )
+        .subscribe((data: Array<Meeting>) => {
+          resolve(data);
+        })
+    }) 
+  }
+
+  getActiveMeeting() : Promise<Meeting> {
+    return new Promise((resolve) => {
+      this.http.get('https://api.epivote.uk/vote/getActiveMeeting')
+      .subscribe((data: Meeting) => {
+          this.activeMeeting = data;
+          resolve(data);
+      })
     })
   }
 

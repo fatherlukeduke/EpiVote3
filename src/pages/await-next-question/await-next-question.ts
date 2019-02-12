@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {  MeetingPatientQuestion,   VoteResults } from '../../models/interfaces';
+import { MeetingPatientQuestion, VoteResults } from '../../models/interfaces';
 import { VoteProvider } from '../../providers/vote/vote';
 import { ChooseVotePage } from '../../pages/choose-vote/choose-vote';
 import { MessagingProvider } from './../../providers/messaging/messaging';
@@ -9,6 +9,7 @@ import { Chart } from 'chart.js';
 import { ChartOptions } from '../../models/config';
 import { Subscription } from 'rxjs/Subscription';
 import { Platform } from 'ionic-angular';
+import { HomePage } from '../home/home';
 
 
 @IonicPage()
@@ -27,23 +28,26 @@ export class AwaitNextQuestionPage {
   voteCount: string;
   currentMessage: string;
   _chartOptions: any;
-  messageSub : Subscription;
+  messageSub: Subscription;
   resumeListener: Subscription;
   currentQuestionText: string;
-  currentPatientNumber : number;
+  currentPatientNumber: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private ref: ChangeDetectorRef, public voteProvider: VoteProvider, public messaging: MessagingProvider, public platform : Platform) {
+    private ref: ChangeDetectorRef, public voteProvider: VoteProvider, public messaging: MessagingProvider, public platform: Platform) {
 
     this.getCurrentQuestion();
+    this.checkMeetingStatus();
 
-    this.resumeListener =   platform.resume.subscribe ( (e) => {
+
+    this.resumeListener = platform.resume.subscribe( e => {
+      this.checkMeetingStatus();
       this.getCurrentQuestion();
     });
   }
 
   ionViewWillEnter() {
-    console.log('ionViewWillEnter')
+    console.log('ionViewWillEnter AwaitNextQuestion')
     //incoming message handler
     this.messageSub = this.messaging.messageChange.subscribe((message: VoteMessage) => {
       console.log('Incoming mesage: ' + JSON.stringify(message));
@@ -56,58 +60,67 @@ export class AwaitNextQuestionPage {
       //voting closed for this question
       if (message.meetingPatientQuestionID == this.voteProvider.currentMeetingPatientQuestionID
         && message.messageCode == 'voting-complete') {
-        //console.log('Question closed');
-         this.getResults();
+        this.getResults();
       }
 
-          //meeting over
-          // if (message.meetingID == this.voteProvider.currentQuestion.meetingID
-          //   && message.messageCode == 'meeting-closed') {
-    
-          // }
+      //meeting over
+      if (message.meetingID == this.voteProvider.activeMeeting.meetingID
+        && message.messageCode == 'meeting-closed') {
+        this.navCtrl.push(HomePage, { toastMessage: 'The meeting was closed' });
+      }
 
     })
   }
 
-  getCurrentQuestion(){
+  //check if the meeting has been ended and return to homepage if so.
+  checkMeetingStatus(){
+    this.voteProvider.getActiveMeeting()
+    .then(meeting => {
+      if (!meeting) {
+        this.navCtrl.push(HomePage, { toastMessage: 'The meeting was closed' });
+      }
+    })
+  }
+
+  getCurrentQuestion() {
     this.voteProvider.getActiveQuestion()
-      .then((data : MeetingPatientQuestion) => {
-          console.log(data);
-          
-          if (data.meetingPatientQuestionID === this.voteProvider.lastMeetingPatientQuestionID) {
-            this.waitForNewQuestion('Waiting for the voting on this questions to close...');
-          } else {
-            this.navCtrl.push(ChooseVotePage);
-          }  
+      .then((data: MeetingPatientQuestion) => {
+        //console.log(data);
+
+        if (data.meetingPatientQuestionID === this.voteProvider.lastMeetingPatientQuestionID) {
+          this.waitForNewQuestion('Waiting for the voting on this questions to close...');
+        } else {
+          this.navCtrl.push(ChooseVotePage);
+        }
       })
-      .catch( (err) => {
-        if(err.code = 404) {  //no active question
+      .catch((err) => {
+        if (err.code = 404) {  //no active question
           console.log('No active question')
-          this.waitForNewQuestion('Waiting for a new question to open for voting.... ');
+          this.waitForNewQuestion('Waiting for a new question to open for voting....');
         }
       })
   }
 
-  waitForNewQuestion(message){
+  waitForNewQuestion(message) {
     this.waiting = true;
     this.showResults = false;
     this.currentMessage = message;
     this.ref.detectChanges();
   }
 
-  getResults(){
+  getResults() {
     this.voteProvider.getResults()
-    .then((results: VoteResults) => {
-      this.waiting = false;
-      this.showResults = true;
-      this.currentMessage = 'Voting on this question has closed.';
-      this.ref.detectChanges();
-      this.renderChart(results.chartData);
-      this.currentQuestionText = results.questionText;
-      this.currentPatientNumber = results.patientNumber;
-      this.voteCount = "Average score: " + results.averageScore.toFixed(1);
-      this.ref.detectChanges();
-    })
+      .then((results: VoteResults) => {
+        this.waiting = false;
+        this.showResults = true;
+        this.currentMessage = 'Voting on this question has closed.';
+        this.ref.detectChanges();
+        this.renderChart(results.chartData);
+        this.currentQuestionText = results.questionText;
+        this.currentPatientNumber = results.patientNumber;
+        this.voteCount = "Average score: " + results.averageScore.toFixed(1);
+        this.ref.detectChanges();
+      })
   }
 
 
@@ -121,7 +134,7 @@ export class AwaitNextQuestionPage {
     this.ref.detectChanges()
   }
 
-  nextQuestion(){
+  nextQuestion() {
     //check if any question open
     this.getCurrentQuestion();
   }
@@ -133,12 +146,9 @@ export class AwaitNextQuestionPage {
 
   //unsub from messages
   ionViewWillLeave() {
-    console.log('ionViewWillLeave')
+    console.log('ionViewWillLeave AwaitNextQuestion')
     this.messageSub.unsubscribe();
     this.resumeListener.unsubscribe();
   }
-
-  
-
 
 }
