@@ -34,7 +34,8 @@ export class AwaitNextQuestionPage {
   currentPatientNumber: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private ref: ChangeDetectorRef, public voteProvider: VoteProvider, public messaging: MessagingProvider, public platform: Platform) {
+    private ref: ChangeDetectorRef, public voteProvider: VoteProvider, 
+    public messaging: MessagingProvider, public platform: Platform) {
 
     this.getCurrentQuestion();
     this.checkMeetingStatus();
