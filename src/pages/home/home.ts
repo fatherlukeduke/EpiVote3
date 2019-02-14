@@ -33,8 +33,8 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
         public voteProvider: VoteProvider, public formBuilder: FormBuilder,
-         public meetingMessaging : MeetingMessagingProvider,
-        public toastCtrl: ToastController, public platform : Platform, public ref : ChangeDetectorRef) {
+        public messaging : MessagingProvider, public toastCtrl: ToastController, 
+        public platform : Platform, public ref : ChangeDetectorRef) {
 
     //display toast message if passed
     this.toastMessage = this.navParams.get('toastMessage');
@@ -78,7 +78,10 @@ export class HomePage {
   ionViewWillEnter() {
     console.log('Home: ionViewWillEnter')
     //incoming message handler
-    this.messageSub = this.meetingMessaging.messageChange.subscribe((message: VoteMessage) => {
+    this.messageSub = this.messaging.messageChange.subscribe((message: VoteMessage) => {
+
+        console.log('Meeting page message: '  + JSON.stringify(message));
+
         if(message.messageCode == 'meeting-open') {
           this.meetingToEnter = true;
           this.ref.detectChanges();

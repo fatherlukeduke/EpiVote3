@@ -49,6 +49,9 @@ export class AwaitNextQuestionPage {
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter AwaitNextQuestion')
+
+    this.messaging.subscribeToTopic('vote');
+
     //incoming message handler
     this.messageSub = this.messaging.messageChange.subscribe((message: VoteMessage) => {
       console.log('Incoming mesage: ' + JSON.stringify(message));
@@ -148,6 +151,7 @@ export class AwaitNextQuestionPage {
   //unsub from messages
   ionViewWillLeave() {
     console.log('ionViewWillLeave AwaitNextQuestion')
+    this.messaging.unsubscribeFromTopic('vote');
     this.messageSub.unsubscribe();
     this.resumeListener.unsubscribe();
   }

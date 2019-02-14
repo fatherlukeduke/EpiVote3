@@ -26,14 +26,11 @@ export class VoteProvider {
 
   public votingChoices: VoteChoice;
   public roles: Role;
-  public completedQuestions: Array<Number>
-
-  //public newPatientFlag : boolean;
-  //  public messageChange : Subject<object> = new Subject<object>();
-  //  public firebaseMessage : object;
+  public completedQuestions: Array<Number>;
 
   constructor(public http: HttpClient, public utilities: UtilitiesProvider,
     public platform: Platform, public fcm: FCM,  public storage: Storage) {
+
     console.log('Hello VoteProvider Provider');
     this.init();
   }
@@ -59,6 +56,11 @@ export class VoteProvider {
     return this.completedQuestions.some(x => x === meetingPatientQuestionID);
   }
 
+  setCurrentRole(role: Role) {
+    this.currentRole = role;
+  }
+
+
   getResults(): Promise<VoteResults> {
     return new Promise((resolve, reject) => {
       this.http.get('https://api.epivote.uk/vote/GetResults/' + this.currentQuestion.meetingPatientQuestionID)
@@ -71,9 +73,6 @@ export class VoteProvider {
     })
   }
 
-  setCurrentRole(role: Role) {
-    this.currentRole = role;
-  }
 
   getActiveQuestion(): Promise<MeetingPatientQuestion> {
     return new Promise((resolve, reject) => {
@@ -90,11 +89,10 @@ export class VoteProvider {
     })
   }
 
-
   getRoles(): Promise<Array<Role>> {
      return new Promise  ( (resolve) =>{
        this.http.get('https://api.epivote.uk/vote/getRoles')
-       .subscribe( (data : Array<Role> ) => {
+       .subscribe( (data : Array<Role>) => {
           resolve(data);
        })
      })

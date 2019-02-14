@@ -28,11 +28,11 @@ export class MeetingMessagingProvider {
       fcm.onNotification().subscribe(data => {
         this.messageChange.next(data);
 
-        //  if (data.wasTapped) {
-        //    console.log("Meeting info message in background: " + JSON.stringify(data));
-        //  } else {
-        //    console.log("Meeting info message in foreground: " + JSON.stringify(data));
-        //  };
+          if (data.wasTapped) {
+            console.log("Meeting info message in background: " + JSON.stringify(data));
+          } else {
+            console.log("Meeting info message in foreground: " + JSON.stringify(data));
+         };
       })
       fcm.onTokenRefresh().subscribe(token => {
         console.log('Token refresh: ' + token);

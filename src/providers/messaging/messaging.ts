@@ -21,18 +21,13 @@ export class MessagingProvider {
 
     //subscribe to FireBase messages
     platform.ready().then(() => {
-      fcm.subscribeToTopic('all');
+      this.subscribeToTopic('meeting');
+
       fcm.getToken().then(token => {
         console.log('New token:' + token);
       })
       fcm.onNotification().subscribe(data => {
         this.messageChange.next(data);
-
-        // if (data.wasTapped) {
-        //   console.log("Received in background: " + JSON.stringify(data));
-        // } else {
-        //   console.log("Received in foreground: " + JSON.stringify(data));
-        // };
       })
       fcm.onTokenRefresh().subscribe(token => {
         console.log('Token refresh: ' + token);
@@ -40,5 +35,15 @@ export class MessagingProvider {
     })
 
   }
+
+  subscribeToTopic(topic : string ){
+    this.fcm.subscribeToTopic(topic);
+  }
+
+   unsubscribeFromTopic(topic : string){
+    this.fcm.unsubscribeFromTopic(topic);
+  }
+
+
 
 }
