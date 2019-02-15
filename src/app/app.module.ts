@@ -15,7 +15,7 @@ import { UtilitiesProvider } from '../providers/utilities/utilities';
 import {FCM} from '@ionic-native/fcm'
 import { MessagingProvider } from '../providers/messaging/messaging';
 import { IonicStorageModule } from '@ionic/storage';
-import { MeetingMessagingProvider } from '../providers/meeting-messaging/meeting-messaging';
+
 
 @NgModule({
   declarations: [
@@ -46,8 +46,7 @@ import { MeetingMessagingProvider } from '../providers/meeting-messaging/meeting
     VoteProvider,
     UtilitiesProvider,
     FCM,
-    MessagingProvider,
-    MeetingMessagingProvider
+    MessagingProvider
   ]
 })
 export class AppModule {}

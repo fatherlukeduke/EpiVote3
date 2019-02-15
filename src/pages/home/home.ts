@@ -7,7 +7,6 @@ import { AwaitNextQuestionPage } from './../await-next-question/await-next-quest
 import { ToastController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { MessagingProvider } from './../../providers/messaging/messaging';
-import { MeetingMessagingProvider } from './../../providers/meeting-messaging/meeting-messaging';
 
 
 @IonicPage()
@@ -106,7 +105,6 @@ export class HomePage {
       this.voteProvider.setCurrentRole(this.entryForm.value.role)
       this.navCtrl.push(AwaitNextQuestionPage);
 
-      console.log(this.entryForm.value.role);
     } else {
       this.error = true;
     }
