@@ -114,56 +114,56 @@ export class VoteProvider {
     })
   }
 
-  // getActiveMeeting(): Promise<Meeting> {
+  getActiveMeeting(): Promise<Meeting> {
+    return new Promise((resolve, reject) => {
+
+      // this.storage.get("token")
+      //   .then((authToken: AuthenticationToken) => {
+
+
+
+          let newHeader = new HttpHeaders( {
+            'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hbm9ueW1vdXMiOiIwNTkyIiwibmJmIjoxNTUwNTg4NTQxLCJleHAiOjE3MDgzNTQ5NDEsImlhdCI6MTU1MDU4ODU0MX0.XO4Ox_mYDvTssI4ykcRubAL9iFCJ9D6xTdxylAz0mfY'
+          })
+
+
+          this.http.get('https://api.epivote.uk/vote/getActiveMeeting', { headers :  newHeader })
+            .subscribe((data: Meeting) => {
+              this.activeMeeting = data;
+              resolve(data);
+            },
+              (err) => {
+                reject(err);
+              }
+            )
+        })
+
+    //})
+  }
+
+  // getActiveMeeting() {
+
   //   return new Promise((resolve, reject) => {
+  //     this.httpNative.setHeader('*', 'Authorization', 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hbm9ueW1vdXMiOiIwNTkyIiwibmJmIjoxNTUwNTg4NTQxLCJleHAiOjE3MDgzNTQ5NDEsImlhdCI6MTU1MDU4ODU0MX0.XO4Ox_mYDvTssI4ykcRubAL9iFCJ9D6xTdxylAz0mfY')
 
-  //     // this.storage.get("token")
-  //     //   .then((authToken: AuthenticationToken) => {
+  //     const options = {
+  //       method: 'get',
+  //       data: { id: 12, message: 'test' },
+  //       headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hbm9ueW1vdXMiOiIwNTkyIiwibmJmIjoxNTUwNTg4NTQxLCJleHAiOjE3MDgzNTQ5NDEsImlhdCI6MTU1MDU4ODU0MX0.XO4Ox_mYDvTssI4ykcRubAL9iFCJ9D6xTdxylAz0mfY' }
+  //     };
 
-
-
-  //         let newHeader = new HttpHeaders({
-  //           'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hbm9ueW1vdXMiOiIwNTkyIiwibmJmIjoxNTUwNTg4NTQxLCJleHAiOjE3MDgzNTQ5NDEsImlhdCI6MTU1MDU4ODU0MX0.XO4Ox_mYDvTssI4ykcRubAL9iFCJ9D6xTdxylAz0mfY'
-  //         })
-
-
-  //         this.http.get('https://api.epivote.uk/vote/getActiveMeeting', { headers :  newHeader })
-  //           .subscribe((data: Meeting) => {
-  //             this.activeMeeting = data;
-  //             resolve(data);
-  //           },
-  //             (err) => {
-  //               reject(err);
-  //             }
-  //           )
+  //     this.httpNative.get('https://api.epivote.uk/vote/getActiveMeeting', {}, {} )
+  //       .then(result => {
+  //         console.log(result);
+  //         resolve(result.data)
+  //       })
+  //       .catch(err => {
+  //         console.log(err.error);
+  //         reject(err);
   //       })
 
-  //   //})
+  //   })
   // }
-
-  getActiveMeeting() {
-
-    return new Promise((resolve, reject) => {
-      this.httpNative.setHeader('*', 'Authorization', 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hbm9ueW1vdXMiOiIwNTkyIiwibmJmIjoxNTUwNTg4NTQxLCJleHAiOjE3MDgzNTQ5NDEsImlhdCI6MTU1MDU4ODU0MX0.XO4Ox_mYDvTssI4ykcRubAL9iFCJ9D6xTdxylAz0mfY')
-
-      const options = {
-        method: 'get',
-        data: { id: 12, message: 'test' },
-        headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hbm9ueW1vdXMiOiIwNTkyIiwibmJmIjoxNTUwNTg4NTQxLCJleHAiOjE3MDgzNTQ5NDEsImlhdCI6MTU1MDU4ODU0MX0.XO4Ox_mYDvTssI4ykcRubAL9iFCJ9D6xTdxylAz0mfY' }
-      };
-
-      this.httpNative.get('https://api.epivote.uk/vote/getActiveMeeting', {}, {} )
-        .then(result => {
-          console.log(result);
-          resolve(result.data)
-        })
-        .catch(err => {
-          console.log(err.error);
-          reject(err);
-        })
-
-    })
-  }
 
 
   submitVote(choice: number) {
