@@ -7,6 +7,7 @@ import { AwaitNextQuestionPage } from './../await-next-question/await-next-quest
 import { ToastController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { MessagingProvider } from './../../providers/messaging/messaging';
+import { ActivateAppPage } from '../activate-app/activate-app';
 
 
 @IonicPage()
@@ -31,9 +32,9 @@ export class HomePage {
   resumeListener: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-        public voteProvider: VoteProvider, public formBuilder: FormBuilder,
-        public messaging : MessagingProvider, public toastCtrl: ToastController, 
-        public platform : Platform, public ref : ChangeDetectorRef) {
+    public voteProvider: VoteProvider, public formBuilder: FormBuilder,
+    public messaging: MessagingProvider, public toastCtrl: ToastController,
+    public platform: Platform, public ref: ChangeDetectorRef) {
 
     //display toast message if passed
     this.toastMessage = this.navParams.get('toastMessage');
@@ -48,10 +49,12 @@ export class HomePage {
     };
 
     //start up
+    //this.voteProvider.init();
     this.checkForActiveMeeting();
+    //this.populateRoles();
 
     //from background
-    this.resumeListener =  platform.resume.subscribe ( e => {
+    this.resumeListener = platform.resume.subscribe(e => {
       console.log('Home page: resumed');
       this.checkForActiveMeeting();
     });
@@ -59,19 +62,30 @@ export class HomePage {
     //validate form
     this.entryForm = this.formBuilder.group({
       role: ['', Validators.required],
-      code : ['', Validators.required]
+      code: ['', Validators.required]
     });
 
-    //populate roles and voting choices - move boting choices?
-    this.voteProvider.getRoles()
-      .then((data: Array<Role>) => {
-        this.roles = data;
-      })
-      .then(() => {
-        this.voteProvider.getVotingChoices();
-        this.loading = false;
-      })
 
+
+  }
+
+  populateRoles(){
+        //populate roles and voting choices - move Voting choices?
+        this.voteProvider.getRoles()
+        .then((data: Array<Role>) => {
+          this.roles = data;
+        })
+        .then(() => {
+          this.voteProvider.getVotingChoices();
+          this.loading = false;
+        })
+        .catch(err => {
+          // if (err.status === 401) {  //not activated app
+          //   this.navCtrl.push(ActivateAppPage);
+          // } else {
+            console.log('Populate roles error: '  + err);
+         // }
+        })
   }
 
   ionViewWillEnter() {
@@ -79,17 +93,17 @@ export class HomePage {
     //incoming message handler
     this.messageSub = this.messaging.messageChange.subscribe((message: VoteMessage) => {
 
-        console.log('Meeting page message: '  + JSON.stringify(message));
+      console.log('Meeting page message: ' + JSON.stringify(message));
 
-        if(message.messageCode == 'meeting-open') {
-          this.meetingToEnter = true;
-          this.ref.detectChanges();
-        }
+      if (message.messageCode == 'meeting-open') {
+        this.meetingToEnter = true;
+        this.ref.detectChanges();
+      }
 
-        if(message.messageCode == 'meeting-closed') {
-          this.meetingToEnter = false;
-          this.ref.detectChanges();
-        }
+      if (message.messageCode == 'meeting-closed') {
+        this.meetingToEnter = false;
+        this.ref.detectChanges();
+      }
     })
 
   }
@@ -97,10 +111,10 @@ export class HomePage {
   enterMeeting() {
     if (this.entryForm.value.role && this.entryForm.value.code) {
 
-      this.voteProvider.getActiveMeeting()
-        .then((data: Meeting) => {
-          this.voteProvider.activeMeeting = data;
-        })
+       this.voteProvider.getActiveMeeting()
+         .then((data: Meeting) => {
+           this.voteProvider.activeMeeting = data;
+         })
 
       this.voteProvider.setCurrentRole(this.entryForm.value.role)
       this.navCtrl.push(AwaitNextQuestionPage);
@@ -112,13 +126,23 @@ export class HomePage {
 
   checkForActiveMeeting() {
     this.voteProvider.getActiveMeeting()
-      .then((data: Meeting) => {
+      .then((data) => {
         if (data) {
+          this.populateRoles();
           this.meetingToEnter = true;
         } else {
           this.meetingToEnter = false;
         }
       })
+      .catch(err => {
+        if (err.status === 401) {  //not activated app
+          console.log("Check for meeting: Not authorised")
+          this.navCtrl.setRoot(ActivateAppPage);
+        } else {
+          console.log('Check for meeting error:' + err);
+        }
+      })
+      
   }
 
   ionViewDidLoad() {

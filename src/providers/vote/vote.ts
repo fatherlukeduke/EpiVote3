@@ -1,16 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { VoteChoice, MeetingPatientQuestion, Role, Vote, VoteResults, Meeting } from '../../models/interfaces';
+import { VoteChoice, MeetingPatientQuestion, Role, Vote, VoteResults, Meeting, AuthenticationToken } from '../../models/interfaces';
 import { UtilitiesProvider } from './../utilities/utilities';
-import { Platform, Menu } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 import { Storage } from '@ionic/storage';
-
-import { Subject } from 'rxjs/Subject';
-import { HttpJsonParseError } from '@angular/common/http/src/response';
-import { NumberSymbol } from '@angular/common';
-import { initDomAdapter } from '@angular/platform-browser/src/browser';
-//import { resolveDefinition } from '@angular/core/src/view/util';
+import { HTTP } from '@ionic-native/http/ngx';
 
 
 @Injectable()
@@ -18,43 +13,31 @@ export class VoteProvider {
 
   public activeMeeting: Meeting;
   public currentQuestion: MeetingPatientQuestion;
-  public lastQuestion : MeetingPatientQuestion;
+  public lastQuestion: MeetingPatientQuestion;
   public currentRole: Role;
   public currentPatient: number;
-  public currentMeetingPatientQuestionID : number = 0;
-  public lastMeetingPatientQuestionID : number = 0;
+  public currentMeetingPatientQuestionID: number = 0;
+  public lastMeetingPatientQuestionID: number = 0;
 
   public votingChoices: VoteChoice;
   public roles: Role;
   public completedQuestions: Array<Number>;
+  public httpHeaders: HttpHeaders;
 
   constructor(public http: HttpClient, public utilities: UtilitiesProvider,
-    public platform: Platform, public fcm: FCM,  public storage: Storage) {
+    public platform: Platform, public fcm: FCM, public storage: Storage, public httpNative: HTTP) {
 
     console.log('Hello VoteProvider Provider');
     this.init();
   }
 
-  init(){
-    this.storage.get('completedQuestions')
-     .then(data => {
-       //if (data ===null){
-        this.storage.set('completedQuestions', "hello")
-       //}
-     })
+  init() {
+
+    console.log('Vote: initialised')
+
+
   }
 
-  getCompletedQuestions() : Promise<string> {
-    return this.storage.get('completedQuestions')
-  }
-
-  setHaveVoted(meetingPatientQuestionID: number) {
-    this.completedQuestions.push(meetingPatientQuestionID);
-  }
-
-  checkHaveVoted(meetingPatientQuestionID: number): boolean {
-    return this.completedQuestions.some(x => x === meetingPatientQuestionID);
-  }
 
   setCurrentRole(role: Role) {
     this.currentRole = role;
@@ -90,17 +73,21 @@ export class VoteProvider {
   }
 
   getRoles(): Promise<Array<Role>> {
-     return new Promise  ( (resolve) =>{
-       this.http.get('https://api.epivote.uk/vote/getRoles')
-       .subscribe( (data : Array<Role>) => {
+    return new Promise((resolve, reject) => {
+      this.http.get('https://api.epivote.uk/vote/getRoles', { headers: this.httpHeaders })
+        .subscribe((data: Array<Role>) => {
           resolve(data);
-       })
-     })
+        },
+          (err) => {
+            reject(err);
+          }
+        )
+    })
   }
 
   getVotingChoices(): Promise<VoteChoice> {
     return new Promise((resolve) => {
-      this.http.get('https://api.epivote.uk/vote/getVotechoices')
+      this.http.get('https://api.epivote.uk/vote/getVotechoices', { headers: this.httpHeaders })
         .subscribe((data: VoteChoice) => {
           this.votingChoices = data;
           resolve(data);
@@ -115,25 +102,66 @@ export class VoteProvider {
           this.activeMeeting = data;
           resolve(data);
         })
-    }) 
+    })
   }
-  
+
   getMeetings(): Promise<Array<Meeting>> {
     return new Promise((resolve) => {
-      this.http.get('https://api.epivote.uk/vote/getMeetings' )
+      this.http.get('https://api.epivote.uk/vote/getMeetings', { headers: this.httpHeaders })
         .subscribe((data: Array<Meeting>) => {
           resolve(data);
         })
-    }) 
+    })
   }
 
-  getActiveMeeting() : Promise<Meeting> {
-    return new Promise((resolve) => {
-      this.http.get('https://api.epivote.uk/vote/getActiveMeeting')
-      .subscribe((data: Meeting) => {
-          this.activeMeeting = data;
-          resolve(data);
-      })
+  // getActiveMeeting(): Promise<Meeting> {
+  //   return new Promise((resolve, reject) => {
+
+  //     // this.storage.get("token")
+  //     //   .then((authToken: AuthenticationToken) => {
+
+
+
+  //         let newHeader = new HttpHeaders({
+  //           'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hbm9ueW1vdXMiOiIwNTkyIiwibmJmIjoxNTUwNTg4NTQxLCJleHAiOjE3MDgzNTQ5NDEsImlhdCI6MTU1MDU4ODU0MX0.XO4Ox_mYDvTssI4ykcRubAL9iFCJ9D6xTdxylAz0mfY'
+  //         })
+
+
+  //         this.http.get('https://api.epivote.uk/vote/getActiveMeeting', { headers :  newHeader })
+  //           .subscribe((data: Meeting) => {
+  //             this.activeMeeting = data;
+  //             resolve(data);
+  //           },
+  //             (err) => {
+  //               reject(err);
+  //             }
+  //           )
+  //       })
+
+  //   //})
+  // }
+
+  getActiveMeeting() {
+
+    return new Promise((resolve, reject) => {
+      this.httpNative.setHeader('*', 'Authorization', 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hbm9ueW1vdXMiOiIwNTkyIiwibmJmIjoxNTUwNTg4NTQxLCJleHAiOjE3MDgzNTQ5NDEsImlhdCI6MTU1MDU4ODU0MX0.XO4Ox_mYDvTssI4ykcRubAL9iFCJ9D6xTdxylAz0mfY')
+
+      const options = {
+        method: 'get',
+        data: { id: 12, message: 'test' },
+        headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hbm9ueW1vdXMiOiIwNTkyIiwibmJmIjoxNTUwNTg4NTQxLCJleHAiOjE3MDgzNTQ5NDEsImlhdCI6MTU1MDU4ODU0MX0.XO4Ox_mYDvTssI4ykcRubAL9iFCJ9D6xTdxylAz0mfY' }
+      };
+
+      this.httpNative.get('https://api.epivote.uk/vote/getActiveMeeting', {}, {} )
+        .then(result => {
+          console.log(result);
+          resolve(result.data)
+        })
+        .catch(err => {
+          console.log(err.error);
+          reject(err);
+        })
+
     })
   }
 
@@ -152,6 +180,7 @@ export class VoteProvider {
         .subscribe(() => resolve())
     })
   }
+
 
 
 

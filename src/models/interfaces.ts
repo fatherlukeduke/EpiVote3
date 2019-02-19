@@ -73,3 +73,9 @@ export interface VoteResults {
     votes : Array<Vote>
 
 }
+
+export interface AuthenticationToken {
+    token : {
+        rawData : string
+    }
+}

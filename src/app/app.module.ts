@@ -15,7 +15,10 @@ import { UtilitiesProvider } from '../providers/utilities/utilities';
 import {FCM} from '@ionic-native/fcm'
 import { MessagingProvider } from '../providers/messaging/messaging';
 import { IonicStorageModule } from '@ionic/storage';
+import { ActivateAppPage } from '../pages/activate-app/activate-app';
+import { AuthenticateProvider } from '../providers/authenticate/authenticate';
 
+import { HTTP } from '@ionic-native/http/ngx';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,8 @@ import { IonicStorageModule } from '@ionic/storage';
     HomePage,
     ConfirmVotePage,
     ChooseVotePage,
-    AwaitNextQuestionPage
+    AwaitNextQuestionPage,
+    ActivateAppPage
   ],
   imports: [
     BrowserModule,
@@ -37,7 +41,8 @@ import { IonicStorageModule } from '@ionic/storage';
     HomePage,
     ConfirmVotePage,
     ChooseVotePage,
-    AwaitNextQuestionPage
+    AwaitNextQuestionPage,
+    ActivateAppPage
   ],
   providers: [
     StatusBar,
@@ -46,7 +51,9 @@ import { IonicStorageModule } from '@ionic/storage';
     VoteProvider,
     UtilitiesProvider,
     FCM,
-    MessagingProvider
+    MessagingProvider,
+    AuthenticateProvider,
+    HTTP
   ]
 })
 export class AppModule {}
