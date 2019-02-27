@@ -1,0 +1,25 @@
+<medivote-header></medivote-header>
+
+<ion-content padding>
+
+  <h2>Your device is not authorised to use EpiVote</h2>
+  <h3>You need to enter an activation code</h3>
+
+  <div *ngIf="error">
+    <h3 style="color: red">{{ errorText }}</h3>
+  </div>
+
+  <form [formGroup]="activationForm">
+
+    <ion-item margin-bottom>
+      <ion-label color="primary" floating>Activation Code</ion-label>
+      <ion-input formControlName="code" minlength="4" maxlength="4" text-uppercase></ion-input>
+    </ion-item>
+
+    <div text-center>
+      <button ion-button large full color="dark" (click)="authenticate()">Register device</button>
+    </div>
+
+  </form>
+
+</ion-content>

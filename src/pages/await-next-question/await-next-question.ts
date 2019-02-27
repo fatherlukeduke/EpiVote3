@@ -92,7 +92,7 @@ export class AwaitNextQuestionPage {
         //console.log(data);
 
         if (data.meetingPatientQuestionID === this.voteProvider.lastMeetingPatientQuestionID) {
-          this.waitForNewQuestion('Waiting for the voting on this questions to close...');
+          this.waitForNewQuestion('Waiting for the voting on this question to close...');
         } else {
           this.navCtrl.push(ChooseVotePage);
         }

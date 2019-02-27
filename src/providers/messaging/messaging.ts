@@ -24,7 +24,7 @@ export class MessagingProvider {
       this.subscribeToTopic('meeting');
 
       fcm.getToken().then(token => {
-        console.log('New token:' + token);
+        console.log('FCM token:' + token);
       })
       fcm.onNotification().subscribe(data => {
         this.messageChange.next(data);
