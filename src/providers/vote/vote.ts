@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { VoteChoice, MeetingPatientQuestion, Role, Vote, VoteResults, Meeting } from '../../models/interfaces';
+import { VoteChoice, MeetingPatientQuestion, Role, Vote, VoteResults, Meeting, AuthenticationToken } from '../../models/interfaces';
 import { UtilitiesProvider } from './../utilities/utilities';
-import { Platform, Menu } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 import { Storage } from '@ionic/storage';
 import { AuthenticateProvider } from './../authenticate/authenticate';
@@ -23,6 +23,7 @@ export class VoteProvider {
   public votingChoices: VoteChoice;
   public roles: Role;
   public completedQuestions: Array<Number>;
+  public httpHeaders: HttpHeaders;
 
   constructor(public http: HttpClient, public utilities: UtilitiesProvider,
     public platform: Platform, public fcm: FCM, public storage: Storage, public authProvider: AuthenticateProvider) {
@@ -30,6 +31,7 @@ export class VoteProvider {
     console.log('Hello VoteProvider Provider');
     //this.init();
   }
+
 
 
   setCurrentRole(role: Role) {

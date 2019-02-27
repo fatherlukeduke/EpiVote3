@@ -9,13 +9,13 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { HomePage } from '../pages/home/home';
 import { ChooseVotePage } from '../pages/choose-vote/choose-vote';
-import {ActivateAppPage} from '../pages/activate-app/activate-app';
 import { ConfirmVotePage } from '../pages/confirm-vote/confirm-vote';
 import { AwaitNextQuestionPage} from '../pages/await-next-question/await-next-question';
 import { VoteProvider } from '../providers/vote/vote';
 
 import {FCM} from '@ionic-native/fcm'
 import { IonicStorageModule } from '@ionic/storage';
+import { ActivateAppPage } from '../pages/activate-app/activate-app';
 
 import { AuthenticateProvider } from '../providers/authenticate/authenticate';
 import { UtilitiesProvider } from '../providers/utilities/utilities';

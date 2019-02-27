@@ -79,6 +79,8 @@ export class HomePage {
 
   }
 
+
+
   ionViewWillEnter() {
     console.log('Home: ionViewWillEnter')
     //incoming message handler
@@ -119,10 +121,10 @@ export class HomePage {
   enterMeeting() {
     if (this.entryForm.value.role && this.entryForm.value.code) {
 
-      this.voteProvider.getActiveMeeting()
-        .then((data: Meeting) => {
-          this.voteProvider.activeMeeting = data;
-        })
+       this.voteProvider.getActiveMeeting()
+         .then((data: Meeting) => {
+           this.voteProvider.activeMeeting = data;
+         })
 
       this.voteProvider.setCurrentRole(this.entryForm.value.role)
       this.navCtrl.push(AwaitNextQuestionPage);
@@ -150,7 +152,6 @@ export class HomePage {
           console.log('Check for meeting error:' + err);
         }
       })
-
   }
 
   ionViewDidLoad() {
